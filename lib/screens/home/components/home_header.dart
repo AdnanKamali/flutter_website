@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 
 import '../../../size_config.dart';
+import '../../profile/profile_screen.dart';
 import 'icon_btn_with_counter.dart';
-import 'search_field.dart';
+// import 'search_field.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({
@@ -18,15 +20,25 @@ class HomeHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SearchField(),
+          // SearchField(),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              border: Border.all(color: Colors.grey),
+            ),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                "assets/icons/User Icon.svg",
+              ),
+              onPressed: () =>
+                  Navigator.pushNamed(context, ProfileScreen.routeName),
+            ),
+          ),
+          Spacer(),
           IconBtnWithCounter(
             svgSrc: "assets/icons/Cart Icon.svg",
+            numOfitem: 2,
             press: () => Navigator.pushNamed(context, CartScreen.routeName),
-          ),
-          IconBtnWithCounter(
-            svgSrc: "assets/icons/Bell.svg",
-            numOfitem: 3,
-            press: () {},
           ),
         ],
       ),
