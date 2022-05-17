@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
+import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 
 import '../../../size_config.dart';
 import '../../profile/profile_screen.dart';
@@ -11,7 +12,7 @@ class HomeHeader extends StatelessWidget {
   const HomeHeader({
     Key? key,
   }) : super(key: key);
-
+  final String cociey = "Hellow";
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,14 +31,19 @@ class HomeHeader extends StatelessWidget {
               border: Border.all(color: Colors.grey),
             ),
             child: IconButton(
-              icon: SvgPicture.asset(
-                "assets/icons/User Icon.svg",
-                height: getProportionateScreenWidth(46),
-                width: getProportionateScreenWidth(46),
-              ),
-              onPressed: () =>
-                  Navigator.pushNamed(context, ProfileScreen.routeName),
-            ),
+                icon: SvgPicture.asset(
+                  "assets/icons/User Icon.svg",
+                  height: getProportionateScreenWidth(46),
+                  width: getProportionateScreenWidth(46),
+                ),
+                onPressed: () {
+                  if (cociey == "Hello") {
+                    // get from server
+                    Navigator.pushNamed(context, ProfileScreen.routeName);
+                  } else {
+                    Navigator.pushNamed(context, SignInScreen.routeName);
+                  }
+                }),
           ),
 
           IconBtnWithCounter(

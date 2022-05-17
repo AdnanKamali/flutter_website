@@ -6,7 +6,7 @@ import '../../size_config.dart';
 import 'components/body.dart';
 
 class HomeScreen extends StatelessWidget {
-  static String routeName = "/home";
+  static String routeName = "/";
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
