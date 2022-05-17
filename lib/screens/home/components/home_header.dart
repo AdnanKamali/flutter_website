@@ -22,6 +22,9 @@ class HomeHeader extends StatelessWidget {
         children: [
           // SearchField(),
           Container(
+            padding: EdgeInsets.all(getProportionateScreenWidth(6)),
+            height: getProportionateScreenWidth(44),
+            width: getProportionateScreenWidth(44),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
               border: Border.all(color: Colors.grey),
@@ -29,12 +32,14 @@ class HomeHeader extends StatelessWidget {
             child: IconButton(
               icon: SvgPicture.asset(
                 "assets/icons/User Icon.svg",
+                height: getProportionateScreenWidth(46),
+                width: getProportionateScreenWidth(46),
               ),
               onPressed: () =>
                   Navigator.pushNamed(context, ProfileScreen.routeName),
             ),
           ),
-          Spacer(),
+
           IconBtnWithCounter(
             svgSrc: "assets/icons/Cart Icon.svg",
             numOfitem: 2,
