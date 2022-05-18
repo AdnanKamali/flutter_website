@@ -43,10 +43,7 @@ class ProductCard extends StatelessWidget {
                       BoxShadow(color: Colors.grey.withOpacity(0.2)),
                     ],
                   ),
-                  child: Hero(
-                    tag: product.id.toString(),
-                    child: Image.asset(product.images[0]),
-                  ),
+                  child: Image.asset(product.images[0]),
                 ),
               ),
               const SizedBox(height: 10),
