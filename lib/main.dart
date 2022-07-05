@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/route_generator.dart';
 
 import 'package:shop_app/theme.dart';
+import 'package:shop_app/viewModel/home_view_model.dart';
 
 import 'screens/home/home_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => ProductViewModel(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

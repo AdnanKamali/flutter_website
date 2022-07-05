@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/Product.dart';
 
 import '../../../constants.dart';
+import '../../../product/model/model.dart';
 import '../../../size_config.dart';
+import '../../../utils/resource_manager/url_manager.dart';
 
 class ProductImages extends StatefulWidget {
   const ProductImages({
@@ -10,7 +11,7 @@ class ProductImages extends StatefulWidget {
     required this.product,
   }) : super(key: key);
 
-  final Product product;
+  final ProductModel product;
 
   @override
   _ProductImagesState createState() => _ProductImagesState();
@@ -26,14 +27,16 @@ class _ProductImagesState extends State<ProductImages> {
           width: getProportionateScreenWidth(238),
           child: AspectRatio(
             aspectRatio: 1,
-            child: Image.asset(widget.product.images[selectedImage]),
+            child: Image.network(UrlManager.images.url +
+                "/" +
+                widget.product.imagesUrl[selectedImage]),
           ),
         ),
         // SizedBox(height: getProportionateScreenWidth(20, context)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...List.generate(widget.product.images.length,
+            ...List.generate(widget.product.imagesUrl.length,
                 (index) => buildSmallProductPreview(index)),
           ],
         )
@@ -60,7 +63,9 @@ class _ProductImagesState extends State<ProductImages> {
           border: Border.all(
               color: kPrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
         ),
-        child: Image.asset(widget.product.images[index]),
+        child: Image.network(
+            UrlManager.images.url + "/" + widget.product.imagesUrl[index],
+            fit: BoxFit.cover),
       ),
     );
   }

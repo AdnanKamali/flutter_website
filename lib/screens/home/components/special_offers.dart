@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/utils/resource_manager/url_manager.dart';
 
 import '../../../size_config.dart';
 import 'section_title.dart';
@@ -26,15 +27,13 @@ class SpecialOffers extends StatelessWidget {
           child: Row(
             children: [
               SpecialOfferCard(
-                image: "assets/images/Image Banner 2.png",
-                category: "Smartphone",
-                numOfBrands: 18,
+                imageUrl: UrlManager.images.url + "/8.jpg",
+                category: "New Model",
                 press: () {},
               ),
               SpecialOfferCard(
-                image: "assets/images/Image Banner 3.png",
-                category: "Fashion",
-                numOfBrands: 24,
+                imageUrl: UrlManager.images.url + "/9.jpg",
+                category: "Wall Model",
                 press: () {},
               ),
               SizedBox(width: getProportionateScreenWidth(20)),
@@ -50,13 +49,11 @@ class SpecialOfferCard extends StatelessWidget {
   const SpecialOfferCard({
     Key? key,
     required this.category,
-    required this.image,
-    required this.numOfBrands,
+    required this.imageUrl,
     required this.press,
   }) : super(key: key);
 
-  final String category, image;
-  final int numOfBrands;
+  final String category, imageUrl;
   final GestureTapCallback press;
 
   @override
@@ -72,8 +69,8 @@ class SpecialOfferCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: Stack(
               children: [
-                Image.asset(
-                  image,
+                Image.network(
+                  imageUrl,
                   fit: BoxFit.cover,
                 ),
                 Container(
@@ -104,7 +101,6 @@ class SpecialOfferCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        TextSpan(text: "$numOfBrands Brands")
                       ],
                     ),
                   ),

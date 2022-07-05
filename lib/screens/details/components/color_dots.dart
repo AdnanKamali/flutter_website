@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/components/rounded_icon_btn.dart';
-import 'package:shop_app/models/Product.dart';
+
+import 'package:shop_app/product/model/model.dart';
+import 'package:shop_app/viewModel/home_view_model.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -11,7 +14,7 @@ class ColorDots extends StatelessWidget {
     required this.product,
   }) : super(key: key);
 
-  final Product product;
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +27,16 @@ class ColorDots extends StatelessWidget {
         children: [
           ...List.generate(
             product.colors.length,
-            (index) => ColorDot(
-              color: product.colors[index],
-              isSelected: index == selectedColor,
-            ),
+            (index) =>
+                Consumer<ProductViewModel>(builder: (context, snapshot, child) {
+              return InkWell(
+                onTap: () => snapshot.setSelectedColor(index),
+                child: ColorDot(
+                  color: product.colors[index],
+                  isSelected: index == snapshot.selectedColor,
+                ),
+              );
+            }),
           ),
           Spacer(),
           RoundedIconBtn(
