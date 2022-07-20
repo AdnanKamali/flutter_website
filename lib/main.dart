@@ -3,13 +3,25 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/route_generator.dart';
 
 import 'package:shop_app/theme.dart';
-import 'package:shop_app/viewModel/home_view_model.dart';
+import 'package:shop_app/viewModel/cart_view_model.dart';
+import 'package:shop_app/viewModel/product_view_model.dart';
+import 'package:shop_app/viewModel/user_view_model.dart';
 
 import 'screens/home/home_screen.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (_) => ProductViewModel(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => ProductViewModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CartViewModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => UserViewModel(),
+      ),
+    ],
     child: MyApp(),
   ));
 }

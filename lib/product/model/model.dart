@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+// problem in use color when client select it
+
 List<ProductModel> productListModelFromJson(String str) => List.from(json
     .decode(str)["products"]
     .map((element) => ProductModel.fromJson(element)));

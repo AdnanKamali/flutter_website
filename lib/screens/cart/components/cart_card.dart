@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/Cart.dart';
+import 'package:shop_app/cart/model/Cart.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -28,7 +28,7 @@ class CartCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Image.network(
-                  UrlManager.images.url + "/" + cart.product.imagesUrl[0]),
+                  UrlManager.images.url + "/" + cart.product!.imagesUrl[0]),
             ),
           ),
         ),
@@ -37,14 +37,14 @@ class CartCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              cart.product.name,
+              cart.product!.name,
               style: TextStyle(color: Colors.black, fontSize: 16),
               maxLines: 2,
             ),
             SizedBox(height: 10),
             Text.rich(
               TextSpan(
-                text: "\$${cart.product.price}",
+                text: "\$${cart.product!.price}",
                 style: TextStyle(
                     fontWeight: FontWeight.w600, color: kPrimaryColor),
                 children: [
@@ -55,7 +55,32 @@ class CartCard extends StatelessWidget {
               ),
             )
           ],
-        )
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Column(
+          children: [
+            SizedBox(
+              height: 35,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 10,
+                ),
+                Text("Color: "),
+                SizedBox(
+                  width: 10,
+                ),
+                CircleAvatar(
+                  maxRadius: 8,
+                  backgroundColor: Color(cart.color!),
+                )
+              ],
+            ),
+          ],
+        ),
       ],
     );
   }

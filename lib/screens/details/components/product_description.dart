@@ -28,6 +28,17 @@ class ProductDescription extends StatelessWidget {
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
+        Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: Text(
+            product.price.toString() + " Rial",
+            style: Theme.of(context).textTheme.headline6?.copyWith(
+                  color: Colors.orange,
+                  fontSize: 36,
+                ),
+          ),
+        ),
         Align(
           alignment: Alignment.centerRight,
           child: Container(

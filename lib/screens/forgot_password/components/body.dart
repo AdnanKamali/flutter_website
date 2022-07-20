@@ -64,7 +64,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                 setState(() {
                   errors.remove(kEmailNullError);
                 });
-              } else if (emailValidatorRegExp.hasMatch(value) &&
+              } else if (phoneNumberValidatorRegExp.hasMatch(value) &&
                   errors.contains(kInvalidEmailError)) {
                 setState(() {
                   errors.remove(kInvalidEmailError);
@@ -77,7 +77,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                 setState(() {
                   errors.add(kEmailNullError);
                 });
-              } else if (!emailValidatorRegExp.hasMatch(value) &&
+              } else if (!phoneNumberValidatorRegExp.hasMatch(value) &&
                   !errors.contains(kInvalidEmailError)) {
                 setState(() {
                   errors.add(kInvalidEmailError);

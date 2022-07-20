@@ -1,6 +1,10 @@
 enum UrlManager {
+  baseTitleUrl("$baseUrl/title/"),
+  cart("$baseUrl/cart"),
+  allProductWithTitle("$baseUrl/title/titles"),
+  register("$baseUrl/register"),
   allProduct("$baseUrl/title/all"),
-  allTitle("$baseUrl/title/only"),
+  allTitle("$baseUrl/title/only-titles"), // change in admin manager
   allCheckout("$baseUrl/checkout"),
   product("$baseUrl/product"),
   images("$baseUrl/images"),

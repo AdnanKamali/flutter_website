@@ -8,42 +8,35 @@ import 'package:shop_app/screens/login_success/login_success_screen.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import '../../../viewModel/user_view_model.dart';
 
-class SignForm extends StatefulWidget {
-  @override
-  _SignFormState createState() => _SignFormState();
-}
-
-class _SignFormState extends State<SignForm> {
+class SignForm extends StatelessWidget {
+  SignForm({super.key, required this.userViewModel});
+  final UserViewModel userViewModel;
   final _formKey = GlobalKey<FormState>();
-  String? email;
-  String? password;
+  // add to view model
+
   bool? remember = false;
   final List<String?> errors = [];
 
   void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
+    if (!errors.contains(error)) errors.add(error);
   }
 
   void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
+    if (errors.contains(error)) errors.remove(error);
   }
 
+  // add to view model
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
         children: [
-          buildEmailFormField(),
+          buildUsernameFormField(userViewModel.setUserName),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(),
+          buildPasswordFormField(userViewModel.setPassword),
           SizedBox(height: getProportionateScreenHeight(30)),
           Row(
             children: [
@@ -51,9 +44,7 @@ class _SignFormState extends State<SignForm> {
                 value: remember,
                 activeColor: kPrimaryColor,
                 onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
+                  remember = value;
                 },
               ),
               Text("Remember me"),
@@ -77,7 +68,8 @@ class _SignFormState extends State<SignForm> {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
                 KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                // Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                userViewModel.login(context);
               }
             },
           ),
@@ -86,14 +78,14 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  TextFormField buildPasswordFormField() {
+  TextFormField buildPasswordFormField(void Function(String?) save) {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => password = newValue,
+      onSaved: save,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
+        } else if (value.length >= 6) {
           removeError(error: kShortPassError);
         }
         return null;
@@ -102,7 +94,7 @@ class _SignFormState extends State<SignForm> {
         if (value!.isEmpty) {
           addError(error: kPassNullError);
           return "";
-        } else if (value.length < 8) {
+        } else if (value.length < 6) {
           addError(error: kShortPassError);
           return "";
         }
@@ -119,14 +111,14 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  TextFormField buildEmailFormField() {
+  TextFormField buildUsernameFormField(void Function(String?) save) {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      onSaved: save,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
+        } else if (phoneNumberValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
         return null;
@@ -135,15 +127,16 @@ class _SignFormState extends State<SignForm> {
         if (value!.isEmpty) {
           addError(error: kEmailNullError);
           return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
+        } else if (!phoneNumberValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
           return "";
         }
+
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
+        labelText: "Phone Number",
+        hintText: "Enter your Phone Number",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/viewModel/home_view_model.dart';
+import 'package:shop_app/viewModel/product_view_model.dart';
+import 'package:shop_app/viewModel/user_view_model.dart';
 
 import '../../../size_config.dart';
 // import 'categories.dart';
@@ -51,7 +52,9 @@ class Body extends StatelessWidget {
           SizedBox(height: getProportionateScreenWidth(10)),
           DiscountBanner(),
           // Categories(),
-          SpecialOffers(),
+          SpecialOffers(
+            productTitleListModel: homeViewModel.productListModelWithTitle,
+          ),
           SizedBox(height: getProportionateScreenWidth(30)),
           PopularProducts(
             productListModel: homeViewModel.productModelListModel,

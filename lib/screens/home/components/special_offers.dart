@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/product_title/model/product_title.dart';
+import 'package:shop_app/screens/home/components/more_product.dart';
+import 'package:shop_app/screens/home/components/special_offres_more.dart';
 import 'package:shop_app/utils/resource_manager/url_manager.dart';
 
 import '../../../size_config.dart';
 import 'section_title.dart';
 
 class SpecialOffers extends StatelessWidget {
-  const SpecialOffers({
+  SpecialOffers({
     Key? key,
+    required this.productTitleListModel,
   }) : super(key: key);
-
+  List<ProductTitleModel> productTitleListModel;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,7 +22,32 @@ class SpecialOffers extends StatelessWidget {
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SectionTitle(
             title: "Special for you",
-            press: () {},
+            press: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => MoreSpecialOffres(
+                  specialOfferCard: List.generate(
+                      productTitleListModel.length,
+                      (index) => SpecialOfferCard(
+                            category: productTitleListModel[index].name,
+                            imageUrl: UrlManager.images.url +
+                                "/" +
+                                productTitleListModel[index]
+                                    .productListModel
+                                    .last
+                                    .imagesUrl
+                                    .last,
+                            press: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MorePopularProduct(
+                                  productListModel: productTitleListModel[index]
+                                      .productListModel,
+                                ),
+                              ));
+                            },
+                          )),
+                ),
+              ));
+            },
           ),
         ),
         SizedBox(height: getProportionateScreenWidth(20)),
@@ -26,16 +55,26 @@ class SpecialOffers extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              SpecialOfferCard(
-                imageUrl: UrlManager.images.url + "/8.jpg",
-                category: "New Model",
-                press: () {},
-              ),
-              SpecialOfferCard(
-                imageUrl: UrlManager.images.url + "/9.jpg",
-                category: "Wall Model",
-                press: () {},
-              ),
+              ...List.generate(
+                  productTitleListModel.length,
+                  (index) => SpecialOfferCard(
+                        category: productTitleListModel[index].name,
+                        imageUrl: UrlManager.images.url +
+                            "/" +
+                            productTitleListModel[index]
+                                .productListModel
+                                .last
+                                .imagesUrl
+                                .last,
+                        press: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MorePopularProduct(
+                              productListModel:
+                                  productTitleListModel[index].productListModel,
+                            ),
+                          ));
+                        },
+                      )),
               SizedBox(width: getProportionateScreenWidth(20)),
             ],
           ),

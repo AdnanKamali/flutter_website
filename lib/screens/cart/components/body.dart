@@ -1,30 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'package:shop_app/product/repo/api_status.dart';
+import 'package:shop_app/viewModel/cart_view_model.dart';
+
 import '../../../size_config.dart';
+import 'cart_card.dart';
 
-class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
+class Body extends StatelessWidget {
+  final CartViewModel cartViewModel;
+  const Body({super.key, required this.cartViewModel});
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: ListView.builder(
-        itemCount: 3,
+        itemCount: cartViewModel.cartListModel.length,
         itemBuilder: (context, index) => Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Dismissible(
-            // key: Key(demoCarts[index].product.id.toString()),
-            key: Key("Hell"),
-            direction: DismissDirection.endToStart,
-            onDismissed: (direction) {
-              // remove card
+            key: Key(cartViewModel.cartListModel[index].id.toString()),
+            confirmDismiss: (c) {
+              return showDialog<bool>(
+                  context: context,
+                  builder: (ctx) =>
+                      AlertDialog(title: Text("Are you sure?"), actions: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop(false);
+                          },
+                          child: Text("No"),
+                          style: ElevatedButton.styleFrom(primary: Colors.red),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final repo = await cartViewModel.deleteCart(
+                                cartViewModel.cartListModel[index].id!);
+
+                            if (repo is Success) {
+                              Navigator.of(ctx).pop(true);
+                              await showDialog(
+                                  context: context,
+                                  builder: (c) {
+                                    return AlertDialog(
+                                      title: Text("Success Deleted"),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(c).pop(false);
+                                          },
+                                          child: Text("No"),
+                                          style: ElevatedButton.styleFrom(
+                                              primary: Colors.orange),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            }
+                          },
+                          child: Text("Yes"),
+                        )
+                      ])).then((value) => value);
             },
+            direction: DismissDirection.endToStart,
             background: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
@@ -38,8 +77,7 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ),
-            // child: CartCard(cart: demoCarts[index]),
-            child: Text("CartCard"),
+            child: CartCard(cart: cartViewModel.cartListModel[index]),
           ),
         ),
       ),
