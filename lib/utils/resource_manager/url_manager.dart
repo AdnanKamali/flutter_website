@@ -5,7 +5,7 @@ enum UrlManager {
   register("$baseUrl/register"),
   allProduct("$baseUrl/title/all"),
   allTitle("$baseUrl/title/only-titles"), // change in admin manager
-  allCheckout("$baseUrl/checkout"),
+  Checkout("$baseUrl/checkout"),
   product("$baseUrl/product"),
   images("$baseUrl/images"),
   imageUpload("$baseUrl/upload"),

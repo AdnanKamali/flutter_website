@@ -4,6 +4,7 @@ import 'package:shop_app/route_generator.dart';
 
 import 'package:shop_app/theme.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
+import 'package:shop_app/viewModel/checkout_view_model.dart';
 import 'package:shop_app/viewModel/product_view_model.dart';
 import 'package:shop_app/viewModel/user_view_model.dart';
 
@@ -20,6 +21,9 @@ void main() {
       ),
       ChangeNotifierProvider(
         create: (_) => UserViewModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CheckoutViewModel(),
       ),
     ],
     child: MyApp(),
