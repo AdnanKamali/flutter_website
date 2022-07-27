@@ -108,6 +108,7 @@ class CheckoutCard extends StatelessWidget {
   }
 
   Future<dynamic> checkoutModalBottmSheet(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
     final PageController pageController = PageController();
     return showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -121,6 +122,7 @@ class CheckoutCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(vertical: 40, horizontal: 60),
               child: Form(
+                key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,12 +130,13 @@ class CheckoutCard extends StatelessWidget {
                     _phoneNumberFormField(checkoutViewModel),
                     _addressFormField(checkoutViewModel),
                     ElevatedButton(
-                        onPressed: () =>
-                            submitButton(checkoutViewModel, pageController),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Checkout"),
-                        ))
+                      onPressed: () => submitButton(
+                          checkoutViewModel, pageController, _formKey),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Checkout"),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -166,7 +169,10 @@ class CheckoutCard extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: checkoutViewModel.isEnableSubmitButtonOptCode
-                      ? () {}
+                      ? () async {
+                          final result =
+                              await checkoutViewModel.postOptCode(2035);
+                        }
                       : null,
                   child: Text("Confirm"),
                 )
@@ -204,8 +210,16 @@ class CheckoutCard extends StatelessWidget {
     );
   }
 
-  void submitButton(
-      CheckoutViewModel checkoutViewModel, PageController pageController) {
+  void submitButton(CheckoutViewModel checkoutViewModel,
+      PageController pageController, GlobalKey<FormState> formKey) async {
+    if (!formKey.currentState!.validate()) {
+      // not validate form
+      return;
+    }
+    // send to server
+    formKey.currentState!.save();
+    final post = await checkoutViewModel.postCheckoutToPay();
+    print(post);
     checkoutViewModel.changeView(pageController);
   }
 }

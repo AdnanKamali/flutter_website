@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop_app/screens/checkouts/checkouts_screen.dart';
 import 'dart:html' as html;
 import 'profile_menu.dart';
 // import 'profile_pic.dart';
@@ -31,7 +32,10 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Checkouts",
             icon: "assets/icons/Question mark.svg",
-            press: () {},
+            press: () {
+              // push to checkouts screen
+              Navigator.of(context).pushNamed(CheckoutsScreen.routeName);
+            },
           ),
           ProfileMenu(
             text: "About Us",

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:shop_app/product/repo/api_status.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
 
@@ -23,45 +22,49 @@ class Body extends StatelessWidget {
             key: Key(cartViewModel.cartListModel[index].id.toString()),
             confirmDismiss: (c) {
               return showDialog<bool>(
-                  context: context,
-                  builder: (ctx) =>
-                      AlertDialog(title: Text("Are you sure?"), actions: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(ctx).pop(false);
-                          },
-                          child: Text("No"),
-                          style: ElevatedButton.styleFrom(primary: Colors.red),
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            final repo = await cartViewModel.deleteCart(
-                                cartViewModel.cartListModel[index].id!);
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text("Are you sure?"),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop(false);
+                      },
+                      child: Text("No"),
+                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final repo = await cartViewModel
+                            .deleteCart(cartViewModel.cartListModel[index].id!);
 
-                            if (repo is Success) {
-                              Navigator.of(ctx).pop(true);
-                              await showDialog(
-                                  context: context,
-                                  builder: (c) {
-                                    return AlertDialog(
-                                      title: Text("Success Deleted"),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(c).pop(false);
-                                          },
-                                          child: Text("No"),
-                                          style: ElevatedButton.styleFrom(
-                                              primary: Colors.orange),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            }
-                          },
-                          child: Text("Yes"),
-                        )
-                      ])).then((value) => value);
+                        if (repo is Success) {
+                          Navigator.of(ctx).pop(true);
+                          await showDialog(
+                            context: context,
+                            builder: (c) {
+                              return AlertDialog(
+                                title: Text("Success Deleted"),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(c).pop(false);
+                                    },
+                                    child: Text("No"),
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.orange),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      child: Text("Yes"),
+                    )
+                  ],
+                ),
+              ).then((value) => value);
             },
             direction: DismissDirection.endToStart,
             background: Container(

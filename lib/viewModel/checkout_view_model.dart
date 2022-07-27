@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/checkout/model/checkout.dart';
 import 'package:shop_app/checkout/repo/checkout_services.dart';
 import 'package:shop_app/product/repo/api_status.dart';
+import 'package:shop_app/utils/user_error.dart';
 
 class CheckoutViewModel extends ChangeNotifier {
+  CheckoutViewModel() {
+    getCheckouts();
+  }
   bool _loading = false;
   bool get loading => _loading;
   void setLoading(bool loading) {
@@ -11,8 +15,22 @@ class CheckoutViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  UserError? _userError;
+  UserError? get userErro => _userError;
+  void setUserError(UserError userError) {
+    _userError = userError;
+    notifyListeners();
+  }
+
   void changeView(PageController pageController) {
     pageController.jumpToPage(1);
+  }
+
+  List<CheckoutModel> _checkoutListModel = [];
+  List<CheckoutModel> get checkoutListModel => _checkoutListModel;
+  void setCheckoutListModel(List<CheckoutModel> checkoutListModel) {
+    _checkoutListModel = checkoutListModel;
+    notifyListeners();
   }
 
   CheckoutModel _checkoutModel = CheckoutModel(address: "", phoneNumber: 0);
@@ -42,6 +60,19 @@ class CheckoutViewModel extends ChangeNotifier {
   }
 
   Future<void> postOptCode(int code) async {
-    await CheckoutServices.postOptCode(code);
+    final result = await CheckoutServices.postOptCode(code);
+    print("Result");
+    print(result);
+  }
+
+  void getCheckouts() async {
+    setLoading(true);
+    final repo = await CheckoutServices.getCheckout();
+    if (repo is Success) {
+      setCheckoutListModel(repo.response as List<CheckoutModel>);
+    } else {
+      setUserError(UserError(message: "Error"));
+    }
+    setLoading(false);
   }
 }

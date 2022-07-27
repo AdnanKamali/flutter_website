@@ -28,30 +28,6 @@ class HomeHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // SearchField(),
-          // Container(
-          //   padding: EdgeInsets.all(getProportionateScreenWidth(6)),
-          //   height: getProportionateScreenWidth(44),
-          //   width: getProportionateScreenWidth(44),
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(50),
-          //     border: Border.all(color: Colors.grey),
-          //   ),
-          //   child: IconButton(
-          //       icon: SvgPicture.asset(
-          //         "assets/icons/User Icon.svg",
-          //         height: getProportionateScreenWidth(46),
-          //         width: getProportionateScreenWidth(46),
-          //       ),
-          //       onPressed: () {
-          //         if (cociey == "Hello") {
-          //           // get from server
-          //           Navigator.pushNamed(context, ProfileScreen.routeName);
-          //         } else {
-          //           Navigator.pushNamed(context, SignInScreen.routeName);
-          //         }
-          //       }),
-          // ),
           TextButton(
             onPressed: () async {
               final refresh_token = await SharedPreferences.getInstance();
@@ -64,11 +40,10 @@ class HomeHeader extends StatelessWidget {
             },
             child: Text(userViewModel.userModel.username ?? "Login/Sign Up"),
             style: TextButton.styleFrom(
-              side: BorderSide(width: 0.5, color: Colors.blueGrey),
+              side: BorderSide(width: 0.5, color: Colors.blue),
               padding: EdgeInsets.all(22),
             ),
           ),
-
           IconBtnWithCounter(
             svgSrc: "assets/icons/Cart Icon.svg",
             numOfitem: cartViewModel.cartListModel.length,
