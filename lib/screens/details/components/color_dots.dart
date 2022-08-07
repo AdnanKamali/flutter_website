@@ -51,7 +51,14 @@ class ColorDots extends StatelessWidget {
               ),
               SizedBox(
                 width: getProportionateScreenWidth(20),
-                child: Center(child: Text("${snapshot.productCount}")),
+                child: Center(
+                    child: Text(
+                  "${snapshot.productCount}",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.red,
+                      fontWeight: FontWeight.w600),
+                )),
               ),
               RoundedIconBtn(
                 icon: Icons.add,

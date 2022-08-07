@@ -1,11 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 import 'package:shop_app/product_title/model/product_title.dart';
 import 'package:shop_app/product_title/repo/product_title_services.dart';
 import 'package:shop_app/utils/resource_manager/error_manager.dart';
 import 'package:shop_app/utils/user_error.dart';
 
-import '../cart/repo/cart_services.dart';
 import '../product/model/model.dart';
 import '../product/repo/api_status.dart';
 import '../product/repo/product_service.dart';
@@ -26,11 +27,13 @@ class ProductViewModel extends ChangeNotifier {
   int _productCount = 1;
   int get productCount => _productCount;
   void incremnt() {
+    if (_productCount == 99) return;
     _productCount++;
     notifyListeners();
   }
 
   void decremnt() {
+    if (_productCount == 1) return;
     _productCount--;
     notifyListeners();
   }

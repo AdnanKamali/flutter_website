@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
 
 import 'components/body.dart';
@@ -17,15 +18,16 @@ class CartScreen extends StatelessWidget {
   }
 
   AppBar buildAppBar(BuildContext context, int length) {
+    final translate = DemoLocalizations.of(context).translate;
     return AppBar(
       title: Column(
         children: [
           Text(
-            "Your Cart",
+            translate("carts"),
             style: TextStyle(color: Colors.black),
           ),
           Text(
-            "$length items",
+            "${translate("cartCount")} $length",
             style: Theme.of(context).textTheme.caption,
           ),
         ],

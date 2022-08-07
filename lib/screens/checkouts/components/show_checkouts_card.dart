@@ -3,9 +3,11 @@ import 'package:shop_app/checkout/model/checkout.dart';
 
 class ShowCheckoutCart extends StatefulWidget {
   final CheckoutModel checkoutModel;
+  final MaterialColor status;
   const ShowCheckoutCart({
     Key? key,
     required this.checkoutModel,
+    required this.status,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,7 @@ class _ShowCheckoutCartState extends State<ShowCheckoutCart> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
+      color: widget.status,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       margin: EdgeInsets.symmetric(
           vertical: fullWidth * 0.02, horizontal: fullWidth * 0.05),

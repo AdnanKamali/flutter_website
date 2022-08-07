@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/size_config.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 
 import '../../../constants.dart';
 
@@ -42,6 +43,7 @@ class _OtpFormState extends State<OtpForm> {
 
   @override
   Widget build(BuildContext context) {
+    final translate = DemoLocalizations.of(context).translate;
     return Form(
       child: Column(
         children: [
@@ -108,7 +110,7 @@ class _OtpFormState extends State<OtpForm> {
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.15),
           DefaultButton(
-            text: "Continue",
+            text: translate("continue"),
             press: () {},
           )
         ],

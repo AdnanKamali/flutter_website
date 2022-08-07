@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/about_us/about_us_screen.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:shop_app/screens/checkouts/checkouts_screen.dart';
 import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
@@ -39,6 +40,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ProfileScreen());
       case "/checkout-screen":
         return MaterialPageRoute(builder: (_) => CheckoutsScreen());
+      case "/about":
+        return MaterialPageRoute(builder: (_) => AboutUsScreen());
       default:
         return MaterialPageRoute(builder: (_) => HomeScreen());
     }

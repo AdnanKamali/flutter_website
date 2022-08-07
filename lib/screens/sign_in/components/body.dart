@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/no_account_text.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/user_view_model.dart';
 import '../../../size_config.dart';
 import 'sign_form.dart';
@@ -9,6 +10,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userViewModel = Provider.of<UserViewModel>(context);
+    final translate = DemoLocalizations.of(context).translate;
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -20,7 +22,7 @@ class Body extends StatelessWidget {
               children: [
                 SizedBox(height: SizeConfig.screenHeight * 0.04),
                 Text(
-                  "Welcome Back",
+                  translate("welcome"),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: getProportionateScreenWidth(28),
@@ -28,7 +30,7 @@ class Body extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Sign in with your phone number and password",
+                  translate("login with your username"),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),

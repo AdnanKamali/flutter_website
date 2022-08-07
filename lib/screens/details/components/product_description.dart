@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/product/model/model.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -17,6 +18,7 @@ class ProductDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = DemoLocalizations.of(context).translate;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -32,34 +34,34 @@ class ProductDescription extends StatelessWidget {
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: Text(
-            product.price.toString() + " Rial",
+            product.price.toString() + translate("rial"),
             style: Theme.of(context).textTheme.headline6?.copyWith(
                   color: Colors.orange,
                   fontSize: 36,
                 ),
           ),
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Container(
-            padding: EdgeInsets.all(getProportionateScreenWidth(15)),
-            width: getProportionateScreenWidth(64),
-            // decoration: BoxDecoration(
-            //   color:
-            //       product.isFavourite ? Color(0xFFFFE6E6) : Color(0xFFF5F6F9),
-            //   borderRadius: BorderRadius.only(
-            //     topLeft: Radius.circular(20),
-            //     bottomLeft: Radius.circular(20),
-            //   ),
-            // ),
-            child: SvgPicture.asset(
-              "assets/icons/Heart Icon_2.svg",
-              // color:
-              //     product.isFavourite ? Color(0xFFFF4848) : Color(0xFFDBDEE4),
-              height: getProportionateScreenWidth(16),
-            ),
-          ),
-        ),
+        // Align(
+        //   alignment: Alignment.centerRight,
+        //   child: Container(
+        //     padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+        //     width: getProportionateScreenWidth(64),
+        //     decoration: BoxDecoration(
+        //       color:
+        //           product.isFavourite ? Color(0xFFFFE6E6) : Color(0xFFF5F6F9),
+        //       borderRadius: BorderRadius.only(
+        //         topLeft: Radius.circular(20),
+        //         bottomLeft: Radius.circular(20),
+        //       ),
+        //     ),
+        //     child: SvgPicture.asset(
+        //       "assets/icons/Heart Icon_2.svg",
+        //       // color:
+        //       //     product.isFavourite ? Color(0xFFFF4848) : Color(0xFFDBDEE4),
+        //       height: getProportionateScreenWidth(16),
+        //     ),
+        //   ),
+        // ),
         Padding(
           padding: EdgeInsets.only(
             left: getProportionateScreenWidth(20),
@@ -80,7 +82,7 @@ class ProductDescription extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "See More Detail",
+                  translate("see more detail"),
                   style: TextStyle(
                       fontWeight: FontWeight.w600, color: kPrimaryColor),
                 ),

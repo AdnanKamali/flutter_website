@@ -3,11 +3,24 @@ import 'package:shop_app/checkout/model/checkout.dart';
 import 'package:shop_app/checkout/repo/checkout_services.dart';
 import 'package:shop_app/product/repo/api_status.dart';
 import 'package:shop_app/utils/user_error.dart';
+import 'package:shop_app/viewModel/token_view_model.dart';
 
 class CheckoutViewModel extends ChangeNotifier {
-  CheckoutViewModel() {
-    getCheckouts();
+  final TokenViewModel? tokenViewModel;
+  CheckoutViewModel({this.tokenViewModel}) {
+    if (tokenViewModel != null) {
+      if (tokenViewModel?.accessToken != null) {
+        _accessToken = tokenViewModel?.accessToken;
+      }
+    }
+    if (_accessToken != null) getCheckouts();
   }
+
+  String? _accessToken;
+  void setAccessToken(String accessToken) {
+    _accessToken = accessToken;
+  }
+
   bool _loading = false;
   bool get loading => _loading;
   void setLoading(bool loading) {
@@ -15,15 +28,18 @@ class CheckoutViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  int? _optCode;
+  int? get optCode => _optCode;
+
+  void setOptCode(int optCode) {
+    _optCode = optCode;
+  }
+
   UserError? _userError;
   UserError? get userErro => _userError;
   void setUserError(UserError userError) {
     _userError = userError;
     notifyListeners();
-  }
-
-  void changeView(PageController pageController) {
-    pageController.jumpToPage(1);
   }
 
   List<CheckoutModel> _checkoutListModel = [];
@@ -44,30 +60,38 @@ class CheckoutViewModel extends ChangeNotifier {
     _checkoutModel.phoneNumber = convertPhoneNumber;
   }
 
-  bool _isEnableSubmitButtonOptCode = false;
-  bool get isEnableSubmitButtonOptCode => _isEnableSubmitButtonOptCode;
-  void setIsEnableSubmitButtonOptCode(bool isEnable) {
-    _isEnableSubmitButtonOptCode = isEnable;
-    notifyListeners();
-  }
-
   Future<Object> postCheckoutToPay() async {
-    final postRepo = await CheckoutServices.postCheckout(_checkoutModel);
+    final postRepo =
+        await CheckoutServices.postCheckout(_checkoutModel, _accessToken!);
     if (postRepo is Success) {
       return postRepo;
     }
     return postRepo;
   }
 
-  Future<void> postOptCode(int code) async {
-    final result = await CheckoutServices.postOptCode(code);
-    print("Result");
-    print(result);
+  Future<bool> getIsAvalableCode() async {
+    final repo = await CheckoutServices.getCheckCodeAvalable(_accessToken!);
+    if (repo is Success) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<Object> postOptCode() async {
+    if (_optCode == null) {
+      return Failure();
+    }
+    final result = await CheckoutServices.postOptCode(_optCode!, _accessToken!);
+    if (result is Success) {
+      _optCode = null;
+      return result;
+    }
+    return Failure();
   }
 
   void getCheckouts() async {
     setLoading(true);
-    final repo = await CheckoutServices.getCheckout();
+    final repo = await CheckoutServices.getCheckout(_accessToken!);
     if (repo is Success) {
       setCheckoutListModel(repo.response as List<CheckoutModel>);
     } else {

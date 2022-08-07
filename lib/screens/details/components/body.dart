@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/product/model/model.dart';
 import 'package:shop_app/product/repo/api_status.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/size_config.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
 
 import 'color_dots.dart';
@@ -23,6 +23,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final newCartViewModel = Provider.of<CartViewModel>(context);
+    final translate = DemoLocalizations.of(context).translate;
     newCartViewModel.setProduct(product);
     return ListView(
       children: [
@@ -55,7 +56,7 @@ class Body extends StatelessWidget {
                           top: getProportionateScreenWidth(15),
                         ),
                         child: DefaultButton(
-                          text: "Add To Cart",
+                          text: translate("add to cart"),
                           press: () async {
                             if (newCartViewModel.cart.color == null) {
                               newCartViewModel
@@ -68,14 +69,13 @@ class Body extends StatelessWidget {
                               newCartViewModel.setProduct(product);
                             }
 
-                            final sharedPref =
-                                await SharedPreferences.getInstance();
-                            if (sharedPref.getString("username") == null) {
+                            if (cartViewModel.accessToken == null) {
                               Navigator.of(context)
                                   .pushNamed(SignInScreen.routeName);
                               return;
                             }
-                            final repo = await newCartViewModel.postCart();
+                            final repo = await newCartViewModel
+                                .postCart(cartViewModel.accessToken!);
 
                             if (repo is Success) {
                               if (repo.code == 101) {

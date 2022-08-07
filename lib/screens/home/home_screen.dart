@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
-// import 'package:shop_app/enums.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/viewModel/token_view_model.dart';
 
 import '../../size_config.dart';
-import '../../utils/resource_manager/url_manager.dart';
 import 'components/body.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,16 +10,38 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    final tokenViewModel = Provider.of<TokenViewModel>(context);
     return Scaffold(
       body: Container(
-        child: Body(),
+        child: _ui(tokenViewModel),
+        // main background color
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: NetworkImage(
-                    UrlManager.images.url + "/" + "background_img.webp"),
-                fit: BoxFit.cover)),
+          gradient: LinearGradient(colors: [
+            Colors.blue.withOpacity(0.1),
+            Colors.blueGrey.withOpacity(0.1)
+          ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+        ),
       ),
-      // bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),
     );
   }
+
+  Widget _ui(TokenViewModel tokenViewModel) {
+    if (tokenViewModel.loading) {
+      return Center(
+        child: Text("Is Loading"),
+      );
+    }
+    return Body();
+  }
 }
+
+/* Use This For Background Image*/
+
+// Container(
+//         child: Body(),
+//         decoration: BoxDecoration(
+//             image: DecorationImage(
+//                 image: NetworkImage(
+//                     UrlManager.images.url + "/" + "background_img.webp"),
+//                 fit: BoxFit.cover)),
+//       ),

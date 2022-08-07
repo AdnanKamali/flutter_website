@@ -32,9 +32,12 @@ dependencies:
   provider: ^6.0.0 # for State management
   http: ^0.13.4
   shared_preferences: ^2.0.15
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
 
 # For information on the generic Dart part of this file, see the
@@ -50,6 +53,7 @@ flutter:
   assets:
     # - assets/images/
     - assets/icons/
+    - assets/language/fa.json
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

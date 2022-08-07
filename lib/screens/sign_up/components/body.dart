@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/components/socal_card.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/size_config.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/user_view_model.dart';
 
 import 'sign_up_form.dart';
@@ -11,6 +12,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userViewModel = Provider.of<UserViewModel>(context);
+    final translate = DemoLocalizations.of(context).translate;
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -21,37 +23,37 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                Text("Register Account", style: headingStyle),
+                Text(translate("register account"), style: headingStyle),
                 Text(
-                  "Complete your details or continue \nwith social media",
+                  translate("compelete fields and press continue"),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 SignUpForm(userViewModel: userViewModel),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SocalCard(
-                      icon: "assets/icons/google-icon.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/facebook-2.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/twitter.svg",
-                      press: () {},
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     SocalCard(
+                //       icon: "assets/icons/google-icon.svg",
+                //       press: () {},
+                //     ),
+                //     SocalCard(
+                //       icon: "assets/icons/facebook-2.svg",
+                //       press: () {},
+                //     ),
+                //     SocalCard(
+                //       icon: "assets/icons/twitter.svg",
+                //       press: () {},
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: getProportionateScreenHeight(20)),
-                Text(
-                  'By continuing your confirm that you agree \nwith our Term and Condition',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.caption,
-                )
+                // Text(
+                //   'By continuing your confirm that you agree \nwith our Term and Condition',
+                //   textAlign: TextAlign.center,
+                //   style: Theme.of(context).textTheme.caption,
+                // )
               ],
             ),
           ),

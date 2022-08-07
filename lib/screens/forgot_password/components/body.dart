@@ -4,6 +4,7 @@ import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/components/no_account_text.dart';
 import 'package:shop_app/size_config.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 
 import '../../../constants.dart';
 
@@ -52,42 +53,47 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
   String? email;
   @override
   Widget build(BuildContext context) {
+    // TODO: not complete
+    final translate = DemoLocalizations.of(context).translate;
     return Form(
       key: _formKey,
       child: Column(
         children: [
           TextFormField(
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.number,
+            // change to phone number
             onSaved: (newValue) => email = newValue,
             onChanged: (value) {
-              if (value.isNotEmpty && errors.contains(kEmailNullError)) {
+              if (value.isNotEmpty &&
+                  errors.contains(translate("error null phone number"))) {
                 setState(() {
-                  errors.remove(kEmailNullError);
+                  errors.remove(translate("error null phone number"));
                 });
-              } else if (phoneNumberValidatorRegExp.hasMatch(value) &&
-                  errors.contains(kInvalidEmailError)) {
+                // change this for number
+              } else if (usernameValidatorRegExp.hasMatch(value) &&
+                  errors.contains("error null phone number")) {
                 setState(() {
-                  errors.remove(kInvalidEmailError);
+                  errors.remove(translate("error null phone number"));
                 });
               }
               return null;
             },
             validator: (value) {
-              if (value!.isEmpty && !errors.contains(kEmailNullError)) {
+              if (value!.isEmpty && !errors.contains("")) {
                 setState(() {
-                  errors.add(kEmailNullError);
+                  errors.add("");
                 });
-              } else if (!phoneNumberValidatorRegExp.hasMatch(value) &&
-                  !errors.contains(kInvalidEmailError)) {
+              } else if (!usernameValidatorRegExp.hasMatch(value) &&
+                  !errors.contains("")) {
                 setState(() {
-                  errors.add(kInvalidEmailError);
+                  errors.add("");
                 });
               }
               return null;
             },
             decoration: InputDecoration(
-              labelText: "Email",
-              hintText: "Enter your email",
+              labelText: translate("phone number"),
+              hintText: translate("enter your phone number"),
               // If  you are using latest version of flutter then lable text and hint text shown like this
               // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,

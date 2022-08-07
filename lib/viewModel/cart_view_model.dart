@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/cart/model/Cart.dart';
 import 'package:shop_app/cart/repo/cart_services.dart';
 import 'package:shop_app/product/model/model.dart';
 import 'package:shop_app/product/repo/api_status.dart';
 import 'package:shop_app/utils/user_error.dart';
+import 'package:shop_app/viewModel/token_view_model.dart';
 
 class CartViewModel extends ChangeNotifier {
-  CartViewModel() {
-    getCarts();
-  }
-  Future<void> setIfAvailableRefreshToken() async {
-    final preference = await SharedPreferences.getInstance();
-    final refreshToken = await preference.getString("refresh_token");
-    if (refreshToken != null) {
-      await CartServices.updateRefreshToken(refreshToken);
+  final TokenViewModel? tokenViewModel;
+  CartViewModel({this.tokenViewModel}) {
+    if (tokenViewModel != null) {
+      tokenViewModel?.getAccessToken();
+      _accessToken = tokenViewModel?.accessToken;
+      if (_accessToken != null) getCarts();
     }
   }
+
+  String? _accessToken;
+  String? get accessToken => _accessToken;
 
   Cart _cartBase = Cart.base();
   Cart get cart => _cartBase;
@@ -76,8 +77,7 @@ class CartViewModel extends ChangeNotifier {
 
   void getCarts() async {
     setLoading(true);
-    await setIfAvailableRefreshToken();
-    final repo = await CartServices.getCart();
+    final repo = await CartServices.getCart(_accessToken!);
     if (repo is Success) {
       setCartListModel(repo.response as List<Cart>);
       setTotalCartPrice();
@@ -89,7 +89,7 @@ class CartViewModel extends ChangeNotifier {
   }
 
   Future<Object> deleteCart(int id) async {
-    final repo = await CartServices.deleteCart(id);
+    final repo = await CartServices.deleteCart(id, _accessToken!);
     if (repo is Success) {
       deleteCartFromListModel(id);
       setTotalCartPrice();
@@ -101,9 +101,10 @@ class CartViewModel extends ChangeNotifier {
     }
   }
 
-  Future<Object> postCart() async {
+  Future<Object> postCart(String accessToken) async {
     if (cart.color != null && cart.numOfItem != null && cart.product != null) {
-      final repo = await CartServices.postCart(cart);
+      print(_accessToken);
+      final repo = await CartServices.postCart(cart, accessToken);
       if (repo is Success) {
         if (_cartListModel.length == 0) {
           // html.window.location.reload();

@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:html' as html;
 import 'package:shop_app/product/repo/api_status.dart';
 import 'package:shop_app/user/model/user.dart';
 import 'package:shop_app/user/repo/user_services.dart';
 import 'package:shop_app/utils/user_error.dart';
+import 'package:shop_app/viewModel/token_view_model.dart';
 
 class UserViewModel extends ChangeNotifier {
+  final TokenViewModel? tokenViewModel;
+  UserViewModel({this.tokenViewModel}) {
+    if (tokenViewModel != null) {
+      if (tokenViewModel?.accessToken != null)
+        _accessToken = tokenViewModel?.accessToken;
+      getUsernameLogedIn();
+    }
+  }
+
+  String? _accessToken;
+  String? get accessToken => _accessToken;
+
   UserError? _userError;
   UserError? get userError => _userError;
   void setUserError(UserError userError) {
@@ -28,7 +42,7 @@ class UserViewModel extends ChangeNotifier {
     if (rePassword != null) _userModel.rePassword = rePassword;
   }
 
-  void setUsernameLogedIn() async {
+  void getUsernameLogedIn() async {
     final ins = await SharedPreferences.getInstance();
     _userModel.username = ins.getString("username");
   }
@@ -75,17 +89,13 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
-  Future<SharedPreferences> get sharedPreferenceInstance async {
-    return await SharedPreferences.getInstance();
-  }
-
   void setRefreshToken(String refreshToken) async {
-    final preference = await sharedPreferenceInstance;
-    await preference.setString("refresh_token", refreshToken);
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("refreshToken", refreshToken);
   }
 
   void setUsernameInLocalStorage(String username) async {
-    final preference = await sharedPreferenceInstance;
-    await preference.setString("username", username);
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("username", username);
   }
 }

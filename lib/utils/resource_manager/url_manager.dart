@@ -1,5 +1,6 @@
 enum UrlManager {
   baseTitleUrl("$baseUrl/title/"),
+  refresh("$baseUrl/refresh"),
   cart("$baseUrl/cart"),
   allProductWithTitle("$baseUrl/title/titles"),
   register("$baseUrl/register"),

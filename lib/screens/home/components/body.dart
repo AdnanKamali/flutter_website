@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/viewModel/product_view_model.dart';
-import 'package:shop_app/viewModel/user_view_model.dart';
 
 import '../../../size_config.dart';
-// import 'categories.dart';
 import 'discount_banner.dart';
 import 'home_header.dart';
 import 'popular_product.dart';
@@ -13,35 +11,23 @@ import 'special_offers.dart';
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final homeViewModel = Provider.of<ProductViewModel>(context);
-    return _ui(homeViewModel, context);
+    final productViewModel = Provider.of<ProductViewModel>(context);
+    return _ui(productViewModel, context);
   }
 
-  Widget _ui(ProductViewModel homeViewModel, BuildContext context) {
-    if (homeViewModel.loading) {
+  Widget _ui(ProductViewModel productViewModel, BuildContext context) {
+    if (productViewModel.loading) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
-    if (homeViewModel.userError != null) {
+    if (productViewModel.userError != null) {
       return Center(
-        child: Text("Error"),
+        child: Text(
+          "We Have Some Error 400",
+          style: TextStyle(fontSize: 80),
+        ),
       );
-
-      // showDialog(
-      //     context: context,
-      //     builder: (ctx) => AlertDialog(
-      //           title: Text(homeViewModel.userError?.message as String),
-      //           content: Text("Do you want try again?"),
-      //           actions: [
-      //             ElevatedButton(
-      //               onPressed: () {
-      //                 // try again
-      //               },
-      //               child: Text("OK"),
-      //             )
-      //           ],
-      //         ));
     }
     return SafeArea(
         child: SingleChildScrollView(
@@ -52,12 +38,12 @@ class Body extends StatelessWidget {
           SizedBox(height: getProportionateScreenWidth(10)),
           DiscountBanner(),
           // Categories(),
-          SpecialOffers(
-            productTitleListModel: homeViewModel.productListModelWithTitle,
+          Categories(
+            productTitleListModel: productViewModel.productListModelWithTitle,
           ),
           SizedBox(height: getProportionateScreenWidth(30)),
           PopularProducts(
-            productListModel: homeViewModel.productModelListModel,
+            productListModel: productViewModel.productModelListModel,
           ),
           SizedBox(height: getProportionateScreenWidth(30)),
         ],

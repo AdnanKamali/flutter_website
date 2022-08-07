@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 
 import '../../../size_config.dart';
 
@@ -14,12 +16,13 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = DemoLocalizations.of(context).translate;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: GoogleFonts.notoKufiArabic(
             fontSize: getProportionateScreenWidth(18),
             color: Colors.black,
           ),
@@ -27,7 +30,7 @@ class SectionTitle extends StatelessWidget {
         GestureDetector(
           onTap: press,
           child: Text(
-            "See More",
+            translate("all"),
             style: TextStyle(color: Color(0xFFBBBBBB)),
           ),
         ),

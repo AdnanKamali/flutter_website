@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop_app/screens/about_us/about_us_screen.dart';
 import 'package:shop_app/screens/checkouts/checkouts_screen.dart';
 import 'dart:html' as html;
 import 'profile_menu.dart';
@@ -19,16 +20,6 @@ class Body extends StatelessWidget {
             icon: "assets/icons/User Icon.svg",
             press: () => {},
           ),
-          // ProfileMenu(
-          //   text: "Notifications",
-          //   icon: "assets/icons/Bell.svg",
-          //   press: () {},
-          // ),
-          // ProfileMenu(
-          //   text: "Settings",
-          //   icon: "assets/icons/Settings.svg",
-          //   press: () {},
-          // ),
           ProfileMenu(
             text: "Checkouts",
             icon: "assets/icons/Question mark.svg",
@@ -40,7 +31,9 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "About Us",
             icon: "assets/icons/Question mark.svg",
-            press: () {},
+            press: () {
+              Navigator.of(context).pushNamed(AboutUsScreen.routeName);
+            },
           ),
           ProfileMenu(
             text: "Log Out",

@@ -7,19 +7,7 @@ import '../../utils/resource_manager/error_manager.dart';
 import '../../utils/resource_manager/url_manager.dart';
 
 class CartServices {
-  static String? token;
-  static Future updateRefreshToken(String refreshToken) async {
-    final String refresh_token = refreshToken;
-    final url = Uri.parse(baseUrl + "/refresh");
-    final act = await http
-        .post(url, headers: {"Authorization": "Bearer $refresh_token"});
-    final repo = jsonDecode(act.body);
-    token = repo["access_token"];
-
-    return repo["username"];
-  }
-
-  static Future<Object> getCart() async {
+  static Future<Object> getCart(String token) async {
     try {
       final url = Uri.parse(UrlManager.cart.url);
       final response =
@@ -38,7 +26,7 @@ class CartServices {
     }
   }
 
-  static Future<Object> postCart(Cart cart) async {
+  static Future<Object> postCart(Cart cart, String token) async {
     try {
       // updateRefreshToken();
       final url = Uri.parse(UrlManager.cart.url);
@@ -61,7 +49,7 @@ class CartServices {
     }
   }
 
-  static Future<Object> deleteCart(int id) async {
+  static Future<Object> deleteCart(int id, String token) async {
     try {
       // updateRefreshToken();
       final url = Uri.parse(UrlManager.cart.url);

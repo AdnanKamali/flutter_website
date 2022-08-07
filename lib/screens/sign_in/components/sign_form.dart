@@ -3,7 +3,7 @@ import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
-import 'package:shop_app/screens/login_success/login_success_screen.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
@@ -30,30 +30,23 @@ class SignForm extends StatelessWidget {
   // add to view model
   @override
   Widget build(BuildContext context) {
+    final translate = DemoLocalizations.of(context).translate;
     return Form(
       key: _formKey,
       child: Column(
         children: [
-          buildUsernameFormField(userViewModel.setUserName),
+          buildUsernameFormField(userViewModel.setUserName, translate),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(userViewModel.setPassword),
+          buildPasswordFormField(userViewModel.setPassword, translate),
           SizedBox(height: getProportionateScreenHeight(30)),
           Row(
             children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  remember = value;
-                },
-              ),
-              Text("Remember me"),
               Spacer(),
               GestureDetector(
                 onTap: () => Navigator.pushNamed(
                     context, ForgotPasswordScreen.routeName),
                 child: Text(
-                  "Forgot Password",
+                  translate("forgot password"),
                   style: TextStyle(decoration: TextDecoration.underline),
                 ),
               )
@@ -62,7 +55,7 @@ class SignForm extends StatelessWidget {
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
-            text: "Continue",
+            text: translate("login"),
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
@@ -78,31 +71,32 @@ class SignForm extends StatelessWidget {
     );
   }
 
-  TextFormField buildPasswordFormField(void Function(String?) save) {
+  TextFormField buildPasswordFormField(
+      void Function(String?) save, String Function(String) translate) {
     return TextFormField(
       obscureText: true,
       onSaved: save,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
+          removeError(error: translate("error null passwrod"));
         } else if (value.length >= 6) {
-          removeError(error: kShortPassError);
+          removeError(error: translate("error short password"));
         }
         return null;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kPassNullError);
+          addError(error: translate("error null passwrod"));
           return "";
-        } else if (value.length < 6) {
-          addError(error: kShortPassError);
+        } else if (value.length < 8) {
+          addError(error: translate("error short password"));
           return "";
         }
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Password",
-        hintText: "Enter your password",
+        labelText: translate("password"),
+        hintText: translate("enter your password"),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -111,32 +105,34 @@ class SignForm extends StatelessWidget {
     );
   }
 
-  TextFormField buildUsernameFormField(void Function(String?) save) {
+  TextFormField buildUsernameFormField(
+      void Function(String?) save, String Function(String) translate) {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: save,
       onChanged: (value) {
+        // TODO: change this for phone number
         if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (phoneNumberValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
+          removeError(error: translate("error null username"));
+        } else if (usernameValidatorRegExp.hasMatch(value)) {
+          removeError(error: translate("error not valid username"));
         }
         return null;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: kEmailNullError);
+          addError(error: translate("error null username"));
           return "";
-        } else if (!phoneNumberValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
+        } else if (!usernameValidatorRegExp.hasMatch(value)) {
+          addError(error: translate("error not valid username"));
           return "";
         }
 
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Phone Number",
-        hintText: "Enter your Phone Number",
+        labelText: translate("username"),
+        hintText: translate("enter your username"),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
