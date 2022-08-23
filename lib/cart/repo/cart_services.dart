@@ -28,7 +28,6 @@ class CartServices {
 
   static Future<Object> postCart(Cart cart, String token) async {
     try {
-      // updateRefreshToken();
       final url = Uri.parse(UrlManager.cart.url);
       final response = await http.post(url,
           headers: {
@@ -51,7 +50,6 @@ class CartServices {
 
   static Future<Object> deleteCart(int id, String token) async {
     try {
-      // updateRefreshToken();
       final url = Uri.parse(UrlManager.cart.url);
       final response = await http.delete(url,
           body: json.encode({"cart_id": id}),

@@ -15,6 +15,8 @@ class TokenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isLogedIn = false;
+
   void autoLoginWithRefreshToken() async {
     setLoading(true);
     final sharedPreferences = await SharedPreferences.getInstance();
@@ -23,13 +25,13 @@ class TokenViewModel extends ChangeNotifier {
       final repo = await TokenServices.postRefreshToken(refreshToken);
       if (repo is Success) {
         _accessToken = repo.response as String;
+        isLogedIn = true;
       }
     }
     setLoading(false);
   }
 
   void saveRefreshTokenWithRegisterOrLogin(String refreshToken) async {
-    print("Saving Porgress");
     final sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString("refreshToken", refreshToken);
   }
@@ -37,7 +39,7 @@ class TokenViewModel extends ChangeNotifier {
   String? _accessToken;
   String? get accessToken => _accessToken;
 
-  void getAccessToken() async {
+  Future<void> getAccessToken() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     final refreshToken = sharedPreferences.getString("refreshToken");
     if (refreshToken != null) {
@@ -49,5 +51,9 @@ class TokenViewModel extends ChangeNotifier {
         return;
       }
     }
+  }
+
+  void setAccessToken(String token) {
+    _accessToken = token;
   }
 }

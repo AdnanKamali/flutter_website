@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/cart/model/Cart.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -15,10 +16,13 @@ class CartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = DemoLocalizations.of(context).translate;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        // TODO: remove screen util
         SizedBox(
-          width: 88,
+          width: 120 + 10,
           child: AspectRatio(
             aspectRatio: 0.88,
             child: Container(
@@ -33,53 +37,58 @@ class CartCard extends StatelessWidget {
           ),
         ),
         SizedBox(width: 20),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              cart.product!.name,
-              style: TextStyle(color: Colors.black, fontSize: 16),
-              maxLines: 2,
-            ),
-            SizedBox(height: 10),
-            Text.rich(
-              TextSpan(
-                text: "\$${cart.product!.price}",
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                cart.product!.name,
                 style: TextStyle(
-                    fontWeight: FontWeight.w600, color: kPrimaryColor),
-                children: [
-                  TextSpan(
-                      text: " x${cart.numOfItem}",
-                      style: Theme.of(context).textTheme.bodyText1),
-                ],
+                    color: Colors.black,
+                    fontSize: getProportionateScreenWidth(14)),
+                maxLines: 2,
               ),
-            )
-          ],
+              SizedBox(height: 10),
+              Text.rich(
+                TextSpan(
+                  text: "IRR${cart.product!.price}",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: kPrimaryColor,
+                      fontSize: getProportionateScreenWidth(14)),
+                  children: [
+                    TextSpan(
+                        text: " x${cart.numOfItem}",
+                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                            fontSize: getProportionateScreenWidth(14))),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         SizedBox(
-          width: 10,
+          width: 45,
         ),
-        Column(
-          children: [
-            SizedBox(
-              height: 35,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Text("Color: "),
-                SizedBox(
-                  width: 10,
-                ),
-                CircleAvatar(
-                  maxRadius: 8,
-                  backgroundColor: Color(cart.color!),
-                )
-              ],
-            ),
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 10,
+              ),
+              Text(translate("color") + " :"),
+              SizedBox(
+                width: 10,
+              ),
+              CircleAvatar(
+                maxRadius: 8,
+                backgroundColor: Color(cart.color!),
+              ),
+            ],
+          ),
         ),
       ],
     );

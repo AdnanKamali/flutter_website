@@ -1,17 +1,20 @@
 class UserModel {
-  String? username; // not required this is for test only use for see
   String? phoneNumber;
-  String? password;
-  String? rePassword;
+  String? firstName;
+  String? lastName;
 
   UserModel({
-    required this.username,
     this.phoneNumber,
-    required this.password,
-    this.rePassword,
+    this.firstName,
+    this.lastName,
   });
   UserModel.base();
 
-  Map<String, dynamic> toJson() =>
-      {"username": username, "password": password, "phone_number": phoneNumber};
+  Map<String, dynamic> toJson() {
+    return {
+      "first_name": firstName,
+      "last_name": lastName,
+      "phone_number": phoneNumber,
+    };
+  }
 }

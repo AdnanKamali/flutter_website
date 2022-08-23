@@ -5,8 +5,10 @@ import 'package:flutter\_localizations/flutter\_localizations.dart';
 
 import 'package:shop_app/theme.dart';
 import 'package:shop_app/utils/localzations/delegate.dart';
+import 'package:shop_app/utils/resource_manager/timer.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
 import 'package:shop_app/viewModel/checkout_view_model.dart';
+import 'package:shop_app/viewModel/error_handler_view_model.dart';
 import 'package:shop_app/viewModel/product_view_model.dart';
 import 'package:shop_app/viewModel/token_view_model.dart';
 import 'package:shop_app/viewModel/user_view_model.dart';
@@ -20,7 +22,13 @@ void main() {
         create: (_) => ProductViewModel(),
       ),
       ChangeNotifierProvider(
+        create: (_) => ErrorHandlerViewModel(),
+      ),
+      ChangeNotifierProvider(
         create: (_) => TokenViewModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => TimerSecond(),
       ),
       ChangeNotifierProxyProvider<TokenViewModel, CartViewModel>(
         create: (_) => CartViewModel(),
@@ -30,7 +38,7 @@ void main() {
       ChangeNotifierProxyProvider<TokenViewModel, UserViewModel>(
         create: (_) => UserViewModel(),
         update: (ctx, tokenViewModel, cartViewModel) =>
-            UserViewModel(tokenViewModel: tokenViewModel),
+            UserViewModel()..setTokenViewModel(tokenViewModel),
       ),
       ChangeNotifierProxyProvider<TokenViewModel, CheckoutViewModel>(
         create: (_) => CheckoutViewModel(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/responsive.dart';
-
 import '../constants.dart';
 import '../size_config.dart';
 
@@ -11,7 +10,7 @@ class DefaultButton extends StatelessWidget {
     this.press,
   }) : super(key: key);
   final String? text;
-  final Function? press;
+  final void Function()? press;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +26,9 @@ class DefaultButton extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           primary: Colors.white,
-          backgroundColor: kPrimaryColor,
+          backgroundColor: press != null ? kPrimaryColor : Colors.grey.shade400,
         ),
-        onPressed: press as void Function()?,
+        onPressed: press,
         child: Text(
           text!,
           style: TextStyle(

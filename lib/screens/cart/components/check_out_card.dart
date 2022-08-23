@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/screens/cart/components/second_page_opt_code_input.dart';
@@ -9,7 +8,6 @@ import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
 import 'package:shop_app/viewModel/checkout_view_model.dart';
 
-import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'first_page_inputs.dart';
 
@@ -56,8 +54,10 @@ class CheckoutCard extends StatelessWidget {
                     text: "${translate("totalPrice")}:\n",
                     children: [
                       TextSpan(
-                        text: "${translate("rial")} $totalPrice",
-                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        text: "$totalPrice IRR",
+                        style: TextStyle(
+                            fontSize: getProportionateScreenWidth(14),
+                            color: Colors.black),
                       ),
                     ],
                   ),
@@ -86,8 +86,6 @@ class CheckoutCard extends StatelessWidget {
       ));
       return;
     }
-    // final localStorage = await SharedPreferences.getInstance();
-    // final isLogin = localStorage.getString("refresh_token");
     final isLogin = cartViewModel.accessToken != null;
     if (isLogin) {
       await checkoutModalBottmSheet(context);
@@ -98,37 +96,11 @@ class CheckoutCard extends StatelessWidget {
   }
 
   Future<dynamic> checkoutModalBottmSheet(BuildContext context) {
-    late PageController pageController;
     return showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      context: context,
-      builder: (ctx) => Consumer<CheckoutViewModel>(
-        builder: (context, checkoutViewModel, child) => FutureBuilder(
-            future: checkoutViewModel.getIsAvalableCode(),
-            builder: (context, isCodeAvailble) {
-              if (isCodeAvailble.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (isCodeAvailble.data as bool) {
-                pageController = PageController(initialPage: 1);
-              } else {
-                pageController = PageController();
-              }
-              return PageView(
-                controller: pageController,
-                children: [
-                  // use future builder instead this
-                  FirstPageCheckoutInformation(pageController: pageController),
-                  SecondPageCheckoutOtp(),
-                  Text("Success message") // insert success widget
-                ],
-              );
-            }),
-      ),
-    );
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        context: context,
+        builder: (ctx) => FirstPageCheckoutInformation());
   }
 }

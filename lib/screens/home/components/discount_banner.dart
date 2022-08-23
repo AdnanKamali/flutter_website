@@ -29,7 +29,7 @@ class DiscountBanner extends StatelessWidget {
             TextSpan(
               text: "Cashback 20%",
               style: TextStyle(
-                fontSize: getProportionateScreenWidth(24),
+                fontSize: getProportionateScreenWidth(22),
                 fontWeight: FontWeight.bold,
               ),
             ),

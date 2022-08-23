@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shop_app/constants.dart';
 import 'package:shop_app/product/repo/api_status.dart';
+import 'package:shop_app/responsive.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
 
 import '../../../size_config.dart';
@@ -9,8 +12,29 @@ import 'cart_card.dart';
 class Body extends StatelessWidget {
   final CartViewModel cartViewModel;
   const Body({super.key, required this.cartViewModel});
+  static void showHelpDialog(context, CartViewModel cartViewModel) async {
+    await showDialog(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: Text("روش حذف کارت"),
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 30),
+            child: Text("جهت حذف کارت آن را به سمت راست بکشید"),
+          ),
+        ],
+      ),
+    );
+    cartViewModel.setHelpDialog();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final translate = DemoLocalizations.of(context).translate;
+    if (!cartViewModel.helpDialog) {
+      Future.delayed(Duration(seconds: 1))
+          .then((value) => showHelpDialog(context, cartViewModel));
+    }
     return Padding(
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
@@ -24,43 +48,20 @@ class Body extends StatelessWidget {
               return showDialog<bool>(
                 context: context,
                 builder: (ctx) => AlertDialog(
-                  title: Text("Are you sure?"),
+                  actionsAlignment: MainAxisAlignment.start,
+                  title: Text(translate("delete cart")),
                   actions: [
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop(false);
-                      },
-                      child: Text("No"),
-                      style: ElevatedButton.styleFrom(primary: Colors.red),
-                    ),
-                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: kPrimaryColor),
                       onPressed: () async {
                         final repo = await cartViewModel
                             .deleteCart(cartViewModel.cartListModel[index].id!);
 
                         if (repo is Success) {
                           Navigator.of(ctx).pop(true);
-                          await showDialog(
-                            context: context,
-                            builder: (c) {
-                              return AlertDialog(
-                                title: Text("Success Deleted"),
-                                actions: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(c).pop(false);
-                                    },
-                                    child: Text("No"),
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.orange),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
                         }
                       },
-                      child: Text("Yes"),
+                      child: Text(translate("confirm")),
                     )
                   ],
                 ),
@@ -80,7 +81,12 @@ class Body extends StatelessWidget {
                 ],
               ),
             ),
-            child: CartCard(cart: cartViewModel.cartListModel[index]),
+            child: Container(
+              child: CartCard(cart: cartViewModel.cartListModel[index]),
+              decoration: BoxDecoration(
+                  color: Color(0xFFF5F6F9),
+                  borderRadius: BorderRadius.circular(15)),
+            ),
           ),
         ),
       ),

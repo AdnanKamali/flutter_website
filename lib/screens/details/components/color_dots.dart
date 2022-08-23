@@ -55,7 +55,7 @@ class ColorDots extends StatelessWidget {
                     child: Text(
                   "${snapshot.productCount}",
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: getProportionateScreenWidth(14),
                       color: Colors.red,
                       fontWeight: FontWeight.w600),
                 )),

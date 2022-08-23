@@ -59,11 +59,17 @@ class PopularProducts extends StatelessWidget {
               controller: _scrollController,
               child: Row(
                 children: [
+                  SizedBox(
+                    width: 10,
+                  ),
                   ...List.generate(
                     productListModel.length > 10 ? 10 : productListModel.length,
                     (index) {
                       return ProductCard(product: productListModel[index]);
                     },
+                  ),
+                  SizedBox(
+                    width: 10,
                   ),
                 ],
               ),

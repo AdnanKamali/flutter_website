@@ -33,55 +33,38 @@ class ProductCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AspectRatio(
-                aspectRatio: 1.02,
+                aspectRatio: aspectRetio,
                 child: Container(
-                  padding: EdgeInsets.all(getProportionateScreenWidth(20)),
+                  padding: EdgeInsets.all(getProportionateScreenWidth(14)),
                   decoration: BoxDecoration(
-                    color: kSecondaryColor.withOpacity(0.1),
+                    color: kSecondaryColor.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Image.network(
-                      UrlManager.images.url + "/" + product.imagesUrl[0]),
+                    UrlManager.images.url + "/" + product.imagesUrl[0],
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
               Text(
                 product.name,
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: getProportionateScreenWidth(14)),
                 maxLines: 2,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "\$${product.price}",
+                    "IRR${product.price}",
                     style: TextStyle(
-                      fontSize: getProportionateScreenWidth(18),
+                      fontSize: getProportionateScreenWidth(14),
                       fontWeight: FontWeight.w600,
-                      color: kPrimaryColor,
+                      color: kPrimaryColor.withOpacity(0.8),
                     ),
                   ),
-                  // InkWell(
-                  //   borderRadius: BorderRadius.circular(50),
-                  //   onTap: () {},
-                  //   child: Container(
-                  //     padding: EdgeInsets.all(getProportionateScreenWidth(8)),
-                  //     height: getProportionateScreenWidth(28),
-                  //     width: getProportionateScreenWidth(28),
-                  //     decoration: BoxDecoration(
-                  //       color: product.isFavourite
-                  //           ? kPrimaryColor.withOpacity(0.15)
-                  //           : kSecondaryColor.withOpacity(0.1),
-                  //       shape: BoxShape.circle,
-                  //     ),
-                  //     child: SvgPicture.asset(
-                  //       "assets/icons/Heart Icon_2.svg",
-                  //       color: product.isFavourite
-                  //           ? Color(0xFFFF4848)
-                  //           : Color(0xFFDBDEE4),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               )
             ],

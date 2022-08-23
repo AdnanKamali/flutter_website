@@ -7,6 +7,7 @@ import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/utils/resource_manager/url_manager.dart';
 
 import '../../../size_config.dart';
+import '../../sign_up/utils/widgets/category_card.dart';
 import 'section_title.dart';
 
 class Categories extends StatelessWidget {
@@ -29,180 +30,121 @@ class Categories extends StatelessWidget {
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SectionTitle(
             title: translate("category"),
-            press: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MoreCategories(
-                  specialOfferCard: List.generate(
-                      productTitleListModel.length,
-                      (index) => CategoryCard(
-                            elevated: 8,
-                            category: productTitleListModel[index].name,
-                            imageUrl: UrlManager.images.url +
-                                "/" +
-                                productTitleListModel[index]
-                                    .productListModel
-                                    .last
-                                    .imagesUrl
-                                    .last,
-                            press: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => MorePopularProduct(
-                                  productListModel: productTitleListModel[index]
-                                      .productListModel,
-                                  title: productTitleListModel[index].name,
-                                ),
-                              ));
-                            },
-                          )),
-                ),
-              ));
-            },
+            press: () => onCategoryTap(productTitleListModel, context),
           ),
         ),
         SizedBox(height: getProportionateScreenWidth(20)),
         Row(
           children: [
-            if (isDesktop)
-              IconButton(
-                  onPressed: () {
-                    if (_scrollController.position.minScrollExtent ==
-                        _scrollController.position.pixels) {
-                      return;
-                    }
-                    _scrollController.animateTo(offset -= 500,
-                        curve: Curves.linear,
-                        duration: Duration(milliseconds: 100));
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.grey,
-                  )),
+            if (isDesktop && productTitleListModel.length > 3)
+              rowScrollerButtonToRight(_scrollController),
             Expanded(
               child: SingleChildScrollView(
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    ...List.generate(
-                        productTitleListModel.length,
-                        (index) => CategoryCard(
-                              category: productTitleListModel[index].name,
-                              imageUrl: UrlManager.images.url +
-                                  "/" +
-                                  productTitleListModel[index]
-                                      .productListModel
-                                      .last
-                                      .imagesUrl
-                                      .last,
-                              press: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MorePopularProduct(
-                                    productListModel:
-                                        productTitleListModel[index]
-                                            .productListModel,
-                                    title: productTitleListModel[index].name,
-                                  ),
-                                ));
-                              },
-                            )),
+                    ...generateCategoryRow(productTitleListModel, context),
                     SizedBox(width: getProportionateScreenWidth(20)),
                   ],
                 ),
               ),
             ),
-            if (isDesktop)
-              IconButton(
-                  onPressed: () {
-                    if (_scrollController.position.maxScrollExtent ==
-                        _scrollController.position.pixels) {
-                      return;
-                    }
-                    _scrollController.animateTo(offset += 500,
-                        curve: Curves.linear,
-                        duration: Duration(milliseconds: 100));
-                  },
-                  icon: Icon(
-                    Icons.arrow_forward,
-                    color: Colors.grey,
-                  )),
+            if (isDesktop && productTitleListModel.length > 3)
+              rowScrollerButtonToLeft(_scrollController)
           ],
         ),
       ],
     );
   }
-}
 
-class CategoryCard extends StatelessWidget {
-  const CategoryCard({
-    Key? key,
-    required this.category,
-    required this.imageUrl,
-    required this.press,
-    this.elevated,
-  }) : super(key: key);
+  IconButton rowScrollerButtonToLeft(ScrollController _scrollController) {
+    return IconButton(
+      onPressed: () {
+        if (_scrollController.position.maxScrollExtent ==
+            _scrollController.position.pixels) {
+          return;
+        }
+        _scrollController.animateTo(offset += 500,
+            curve: Curves.linear, duration: Duration(milliseconds: 100));
+      },
+      icon: Icon(
+        Icons.arrow_forward,
+        color: Colors.grey,
+      ),
+    );
+  }
 
-  final String category, imageUrl;
-  final GestureTapCallback press;
-  final double? elevated;
+  IconButton rowScrollerButtonToRight(ScrollController _scrollController) {
+    return IconButton(
+      onPressed: () {
+        if (_scrollController.position.minScrollExtent ==
+            _scrollController.position.pixels) {
+          return;
+        }
+        _scrollController.animateTo(
+          offset -= 500,
+          curve: Curves.linear,
+          duration: Duration(milliseconds: 100),
+        );
+      },
+      icon: Icon(
+        Icons.arrow_back,
+        color: Colors.grey,
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
-      child: Card(
-        elevation: elevated,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: GestureDetector(
-          onTap: press,
-          child: SizedBox(
-            width: getProportionateScreenWidth(242),
-            height: getProportionateScreenWidth(100),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Stack(
-                children: [
-                  Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF343434).withOpacity(0.4),
-                          Color(0xFF343434).withOpacity(0.15),
-                        ],
-                      ),
+  void onCategoryTap(
+      List<ProductTitleModel> productTitleListModel, BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MoreCategories(
+          specialOfferCard: List.generate(
+            productTitleListModel.length,
+            (index) {
+              final imagesUrl =
+                  productTitleListModel[index].productListModel.last.imagesUrl;
+              return CategoryCard(
+                elevated: 8,
+                category: productTitleListModel[index].name,
+                imageUrl: UrlManager.images.url + "/" + imagesUrl.last,
+                press: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MorePopularProduct(
+                      productListModel:
+                          productTitleListModel[index].productListModel,
+                      title: productTitleListModel[index].name,
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: getProportionateScreenWidth(15.0),
-                      vertical: getProportionateScreenWidth(10),
-                    ),
-                    child: Text.rich(
-                      TextSpan(
-                        style: TextStyle(color: Colors.white),
-                        children: [
-                          TextSpan(
-                            text: "$category\n",
-                            style: TextStyle(
-                              fontSize: getProportionateScreenWidth(18),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                  ));
+                },
+              );
+            },
           ),
         ),
       ),
     );
+  }
+
+  List<CategoryCard> generateCategoryRow(
+    List<ProductTitleModel> productTitleListModel,
+    BuildContext context,
+  ) {
+    return List.generate(productTitleListModel.length, (index) {
+      final imagesUrl =
+          productTitleListModel[index].productListModel.last.imagesUrl;
+      return CategoryCard(
+        category: productTitleListModel[index].name,
+        imageUrl: UrlManager.images.url + "/" + imagesUrl.last,
+        press: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => MorePopularProduct(
+              productListModel: productTitleListModel[index].productListModel,
+              title: productTitleListModel[index].name,
+            ),
+          ));
+        },
+      );
+    });
   }
 }

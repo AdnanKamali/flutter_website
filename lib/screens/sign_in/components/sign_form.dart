@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/helper/keyboard.dart';
+import 'package:shop_app/product/repo/api_status.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_app/utils/localzations/demo_localzations.dart';
 
@@ -31,13 +31,14 @@ class SignForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = DemoLocalizations.of(context).translate;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
     return Form(
       key: _formKey,
       child: Column(
         children: [
-          buildUsernameFormField(userViewModel.setUserName, translate),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(userViewModel.setPassword, translate),
+          // buildUsernameFormField(userViewModel.setUserName, translate),
+          // SizedBox(height: getProportionateScreenHeight(30)),
+          // buildPasswordFormField(userViewModel.setPassword, translate),
           SizedBox(height: getProportionateScreenHeight(30)),
           Row(
             children: [
@@ -56,13 +57,23 @@ class SignForm extends StatelessWidget {
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: translate("login"),
-            press: () {
+            press: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
                 KeyboardUtil.hideKeyboard(context);
                 // Navigator.pushNamed(context, LoginSuccessScreen.routeName);
-                userViewModel.login(context);
+                // final result = await userViewModel.login();
+                var result = Failure();
+                if (result is Failure) {
+                  scaffoldMessenger.showSnackBar(SnackBar(
+                    content: Text(translate("Username Or Password Not Currect"),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.white,
+                            fontSize: getProportionateScreenWidth(18))),
+                    backgroundColor: Colors.redAccent,
+                  ));
+                }
               }
             },
           ),
@@ -100,7 +111,7 @@ class SignForm extends StatelessWidget {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        // suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),
     );
   }
@@ -111,7 +122,6 @@ class SignForm extends StatelessWidget {
       keyboardType: TextInputType.emailAddress,
       onSaved: save,
       onChanged: (value) {
-        // TODO: change this for phone number
         if (value.isNotEmpty) {
           removeError(error: translate("error null username"));
         } else if (usernameValidatorRegExp.hasMatch(value)) {
@@ -136,7 +146,7 @@ class SignForm extends StatelessWidget {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+        // suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
   }

@@ -8,16 +8,18 @@ class AboutUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Content(),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.blue.withOpacity(0.1),
-            Colors.blueGrey.withOpacity(0.1),
-          ],
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
+          gradient: LinearGradient(
+        colors: [Colors.blue.shade50, Colors.yellow.shade100, Colors.white],
+        begin: Alignment.bottomLeft,
+        end: Alignment.topRight,
+      )),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
         ),
+        body: Content(),
       ),
     );
   }

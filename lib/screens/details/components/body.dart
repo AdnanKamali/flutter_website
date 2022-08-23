@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/product/model/model.dart';
 import 'package:shop_app/product/repo/api_status.dart';
-import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
+import 'package:shop_app/viewModel/error_handler_view_model.dart';
+import 'package:shop_app/viewModel/user_view_model.dart';
 
+import '../../../utils/resource_manager/widgets.dart';
 import 'color_dots.dart';
 import 'product_description.dart';
 import 'top_rounded_container.dart';
@@ -70,8 +72,24 @@ class Body extends StatelessWidget {
                             }
 
                             if (cartViewModel.accessToken == null) {
-                              Navigator.of(context)
-                                  .pushNamed(SignInScreen.routeName);
+                              // Sign up
+                              final userViewModel = Provider.of<UserViewModel>(
+                                  context,
+                                  listen: false);
+                              final errorViewModel =
+                                  Provider.of<ErrorHandlerViewModel>(context,
+                                      listen: false);
+                              await sign_up(context, [
+                                phoneNumberPageLogin(
+                                    userViewModel, translate, context),
+                                confirmPhoneNumber(userViewModel, translate),
+                                signUpFullName(userViewModel, translate)
+                              ]).then((value) {
+                                userViewModel.pageChanger(0);
+                                userViewModel.backToDefualt();
+                                errorViewModel.backToDefualt();
+                              });
+
                               return;
                             }
                             final repo = await newCartViewModel
@@ -85,8 +103,15 @@ class Body extends StatelessWidget {
                                     .insertToCartModel(newCartViewModel.cart);
                               }
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Added To Cart")));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                      content: Text(
+                                translate("added to cart"),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    ?.copyWith(color: Colors.white),
+                              )));
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(

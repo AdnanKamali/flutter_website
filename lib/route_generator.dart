@@ -9,9 +9,9 @@ import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/login_success/login_success_screen.dart';
 import 'package:shop_app/screens/otp/otp_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
-import 'package:shop_app/screens/sign_up/sign_up_screen.dart';
+// import 'package:shop_app/screens/sign_up/sign_up_screen.dart';
 
-import 'screens/sign_in/sign_in_screen.dart';
+// import 'screens/sign_in/sign_in_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generaterRoute(RouteSettings settings) {
@@ -23,10 +23,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ForgotPasswordScreen());
       case "/login_success":
         return MaterialPageRoute(builder: (_) => LoginSuccessScreen());
-      case "/sign_up":
-        return MaterialPageRoute(builder: (_) => SignUpScreen());
-      case "/sign_in":
-        return MaterialPageRoute(builder: (_) => SignInScreen());
+      // case "/sign_up":
+      //   return MaterialPageRoute(builder: (_) => SignUpScreen());
+      // case "/sign_in":
+      //   return MaterialPageRoute(builder: (_) => SignInScreen());
       case "/complete_profile":
         return MaterialPageRoute(builder: (_) => CompleteProfileScreen());
       case "/otp":

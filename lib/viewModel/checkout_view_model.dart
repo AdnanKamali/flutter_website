@@ -49,15 +49,10 @@ class CheckoutViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  CheckoutModel _checkoutModel = CheckoutModel(address: "", phoneNumber: 0);
+  CheckoutModel _checkoutModel = CheckoutModel(address: "");
   CheckoutModel get checkoutModel => _checkoutModel;
   void saveAddress(String? address) {
     _checkoutModel.address = address;
-  }
-
-  void savePhoneNumber(String? phoneNumber) {
-    final convertPhoneNumber = int.tryParse(phoneNumber!);
-    _checkoutModel.phoneNumber = convertPhoneNumber;
   }
 
   Future<Object> postCheckoutToPay() async {
@@ -69,13 +64,13 @@ class CheckoutViewModel extends ChangeNotifier {
     return postRepo;
   }
 
-  Future<bool> getIsAvalableCode() async {
-    final repo = await CheckoutServices.getCheckCodeAvalable(_accessToken!);
-    if (repo is Success) {
-      return true;
-    }
-    return false;
-  }
+  // Future<bool> getIsAvalableCode() async {
+  //   final repo = await CheckoutServices.getCheckCodeAvalable(_accessToken!);
+  //   if (repo is Success) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   Future<Object> postOptCode() async {
     if (_optCode == null) {

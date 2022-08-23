@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 import 'constants.dart';
 
 ThemeData theme() {
   return ThemeData(
     scaffoldBackgroundColor: Colors.white,
-    fontFamily: GoogleFonts.notoKufiArabic().fontFamily,
+    fontFamily: "IranSans",
     appBarTheme: appBarTheme(),
     textTheme: textTheme(),
     inputDecorationTheme: inputDecorationTheme(),

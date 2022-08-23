@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/product/model/model.dart';
 import 'package:shop_app/utils/localzations/demo_localzations.dart';
 
@@ -37,7 +36,7 @@ class ProductDescription extends StatelessWidget {
             product.price.toString() + translate("rial"),
             style: Theme.of(context).textTheme.headline6?.copyWith(
                   color: Colors.orange,
-                  fontSize: 36,
+                  fontSize: getProportionateScreenWidth(32),
                 ),
           ),
         ),

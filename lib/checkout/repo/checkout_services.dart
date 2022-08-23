@@ -46,23 +46,23 @@ class CheckoutServices {
     }
   }
 
-  static Future<Object> getCheckCodeAvalable(String token) async {
-    // please handle errors
-    final url = Uri.parse(baseUrl + "/opt_check");
-    try {
-      final repo = await http.get(url, headers: {
-        "Content-Type": "application/json",
-        "Authorization": " Bearer $token"
-      });
-      const int codeNotExpired = 202;
-      if (repo.statusCode == codeNotExpired) {
-        return Success(code: codeNotExpired);
-      }
-      return Failure();
-    } catch (e) {
-      return Failure();
-    }
-  }
+  // static Future<Object> getCheckCodeAvalable(String token) async {
+  //   // please handle errors
+  //   final url = Uri.parse(baseUrl + "/opt_check");
+  //   try {
+  //     final repo = await http.get(url, headers: {
+  //       "Content-Type": "application/json",
+  //       "Authorization": " Bearer $token"
+  //     });
+  //     const int codeNotExpired = 202;
+  //     if (repo.statusCode == codeNotExpired) {
+  //       return Success(code: codeNotExpired);
+  //     }
+  //     return Failure();
+  //   } catch (e) {
+  //     return Failure();
+  //   }
+  // }
 
   static Future<Object> postOptCode(int code, String token) async {
     // handle errors

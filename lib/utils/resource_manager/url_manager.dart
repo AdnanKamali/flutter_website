@@ -6,11 +6,14 @@ enum UrlManager {
   register("$baseUrl/register"),
   allProduct("$baseUrl/title/all"),
   allTitle("$baseUrl/title/only-titles"), // change in admin manager
+  phoneNumber("$baseUrl/phone_number"),
   Checkout("$baseUrl/checkout"),
   product("$baseUrl/product"),
   images("$baseUrl/images"),
   imageUpload("$baseUrl/upload"),
   dashboard("$baseUrl/dashboard"),
+  otpCheck("$baseUrl/opt_check"),
+  fullName("$baseUrl/full_name"),
   login("$baseUrl/login");
 
   final String url;

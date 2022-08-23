@@ -22,7 +22,7 @@ class CheckoutsScreen extends StatelessWidget {
       );
     }
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 221, 221, 221),
+      // backgroundColor: Color.fromARGB(255, 221, 221, 221),
       appBar: AppBar(
         title: Text(
           "Checkouts",

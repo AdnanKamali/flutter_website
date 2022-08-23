@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/constants.dart';
 import 'package:shop_app/viewModel/token_view_model.dart';
 
 import '../../size_config.dart';
@@ -17,9 +18,10 @@ class HomeScreen extends StatelessWidget {
         // main background color
         decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
-            Colors.blue.withOpacity(0.1),
-            Colors.blueGrey.withOpacity(0.1)
-          ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+            Colors.deepOrange.withOpacity(0.1),
+            kPrimaryColor.withOpacity(0.1),
+            Colors.deepOrange.withOpacity(0.1),
+          ], begin: Alignment.bottomLeft, end: Alignment.topRight),
         ),
       ),
     );

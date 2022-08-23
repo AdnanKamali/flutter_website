@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/checkout/model/checkout.dart';
 
+import '../../../size_config.dart';
+
 class ShowCheckoutCart extends StatefulWidget {
   final CheckoutModel checkoutModel;
-  final MaterialColor status;
   const ShowCheckoutCart({
     Key? key,
     required this.checkoutModel,
-    required this.status,
   }) : super(key: key);
 
   @override
@@ -27,19 +27,19 @@ class _ShowCheckoutCartState extends State<ShowCheckoutCart> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Color.fromARGB(255, 250, 250, 247),
       elevation: 5,
-      color: widget.status,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       margin: EdgeInsets.symmetric(
           vertical: fullWidth * 0.02, horizontal: fullWidth * 0.05),
       child: ListTile(
         contentPadding: EdgeInsets.only(
-            left: fullWidth * 0.05,
+            right: fullWidth * 0.05,
             top: fullWidth * 0.02,
             bottom: fullWidth * 0.02),
         title: Text(
-          "Total Price: ${widget.checkoutModel.totalPrice} Rial",
-          style: TextStyle(fontSize: 26),
+          "قیمت کل : ${widget.checkoutModel.totalPrice} ریال",
+          style: TextStyle(fontSize: getProportionateScreenWidth(22)),
         ),
         trailing: IconButton(
             onPressed: () {
@@ -61,16 +61,16 @@ class _ShowCheckoutCartState extends State<ShowCheckoutCart> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Address: ${widget.checkoutModel.address}",
-                style: TextStyle(fontSize: 20),
+                "آدرس : ${widget.checkoutModel.address}",
+                style: TextStyle(fontSize: getProportionateScreenWidth(18)),
               ),
+              // Text(
+              //   "Phone Number: ${widget.checkoutModel.phoneNumber}",
+              //   style: TextStyle(fontSize: getProportionateScreenWidth(18)),
+              // ),
               Text(
-                "Phone Number: ${widget.checkoutModel.phoneNumber}",
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                "carts: ",
-                style: TextStyle(fontSize: 20),
+                "خرید ها: ",
+                style: TextStyle(fontSize: getProportionateScreenWidth(18)),
               ),
               ...List.generate(widget.checkoutModel.cartListModel!.length,
                   (index) {
@@ -78,9 +78,19 @@ class _ShowCheckoutCartState extends State<ShowCheckoutCart> {
                     widget.checkoutModel.cartListModel![index];
                 return Row(
                   children: [
-                    Text(
-                      "   ${cartListModelProduct.product?.name} X ${cartListModelProduct.numOfItem} Color: ",
-                      style: TextStyle(fontSize: 20),
+                    Text.rich(
+                      TextSpan(children: [
+                        TextSpan(text: "    "),
+                        TextSpan(text: "${cartListModelProduct.product?.name}"),
+                        TextSpan(text: " "),
+                        TextSpan(text: "${cartListModelProduct.numOfItem}"),
+                        TextSpan(text: "x"),
+                        TextSpan(text: " "),
+                        TextSpan(text: "  "),
+                        TextSpan(text: "رنگ:"),
+                      ]),
+                      style:
+                          TextStyle(fontSize: getProportionateScreenWidth(18)),
                     ),
                     SizedBox(
                       width: 32,

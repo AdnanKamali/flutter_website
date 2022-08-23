@@ -22,6 +22,7 @@ class Body extends StatelessWidget {
       );
     }
     if (productViewModel.userError != null) {
+      // TODO: Beatiful Error Server
       return Center(
         child: Text(
           "We Have Some Error 400",

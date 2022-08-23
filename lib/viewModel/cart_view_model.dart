@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/cart/model/Cart.dart';
 import 'package:shop_app/cart/repo/cart_services.dart';
 import 'package:shop_app/product/model/model.dart';
@@ -14,6 +15,20 @@ class CartViewModel extends ChangeNotifier {
       _accessToken = tokenViewModel?.accessToken;
       if (_accessToken != null) getCarts();
     }
+    getHelpDialog();
+  }
+  bool helpDialog = false;
+  void getHelpDialog() async {
+    final ins = await SharedPreferences.getInstance();
+    if (ins.getBool("dialog") != null) {
+      helpDialog = ins.getBool("dialog")!;
+    }
+  }
+
+  void setHelpDialog() async {
+    helpDialog = true;
+    final ins = await SharedPreferences.getInstance();
+    ins.setBool("dialog", helpDialog);
   }
 
   String? _accessToken;
@@ -103,7 +118,6 @@ class CartViewModel extends ChangeNotifier {
 
   Future<Object> postCart(String accessToken) async {
     if (cart.color != null && cart.numOfItem != null && cart.product != null) {
-      print(_accessToken);
       final repo = await CartServices.postCart(cart, accessToken);
       if (repo is Success) {
         if (_cartListModel.length == 0) {

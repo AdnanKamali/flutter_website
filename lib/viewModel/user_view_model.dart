@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:html' as html;
 import 'package:shop_app/product/repo/api_status.dart';
 import 'package:shop_app/user/model/user.dart';
 import 'package:shop_app/user/repo/user_services.dart';
@@ -9,13 +7,21 @@ import 'package:shop_app/utils/user_error.dart';
 import 'package:shop_app/viewModel/token_view_model.dart';
 
 class UserViewModel extends ChangeNotifier {
-  final TokenViewModel? tokenViewModel;
-  UserViewModel({this.tokenViewModel}) {
-    if (tokenViewModel != null) {
-      if (tokenViewModel?.accessToken != null)
-        _accessToken = tokenViewModel?.accessToken;
-      getUsernameLogedIn();
-    }
+  UserViewModel() {
+    getUsernameLogedIn();
+  }
+
+  TokenViewModel? _tokenViewModel;
+  TokenViewModel? get tokenViewModel => _tokenViewModel;
+  void setTokenViewModel(TokenViewModel tokenViewModel) {
+    _tokenViewModel = tokenViewModel;
+    _tokenViewModel?.getAccessToken();
+    _accessToken = _tokenViewModel?.accessToken;
+  }
+
+  void backToDefualt() {
+    _userModel = UserModel.base();
+    _optCode = null;
   }
 
   String? _accessToken;
@@ -28,65 +34,85 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  String? _optCode;
+  String? get optCode => _optCode;
+  void setOptCode(String? code) {
+    _optCode = code;
+    // if (code == "") {
+    //   notifyListeners();
+    // }
+  }
+
   UserModel _userModel = UserModel.base();
   UserModel get userModel => _userModel;
-  void setUserName(String? username) {
-    if (username != null) _userModel.username = username;
+
+  void setPhoneNumber(String? phoneNumber) {
+    _userModel.phoneNumber = phoneNumber;
   }
 
-  void setPassword(String? password) {
-    if (password != null) _userModel.password = password;
+  void setFirstName(String? firstName) {
+    _userModel.firstName = firstName;
   }
 
-  void setRePassword(String? rePassword) {
-    if (rePassword != null) _userModel.rePassword = rePassword;
+  void setLastName(String? lastName) {
+    _userModel.lastName = lastName;
+  }
+
+  Future<Object> postPhoneNumber() async {
+    final repo = await UserSerevices.postPhoneNumber(userModel.phoneNumber!);
+    print(_userModel.firstName);
+    if (repo is Success) {
+      _accessToken = (repo.response as Map)["access_token"];
+      return Success();
+    } else {
+      return Failure();
+    }
+  }
+
+  Future<int> postOptCode() async {
+    final repo = await UserSerevices.postOtpCode(optCode!, _accessToken!);
+    if (repo is Success) {
+      setPhoneNumberInLocalStorage();
+      final refresh = (repo.response as Map)["refresh_token"];
+      tokenViewModel?.saveRefreshTokenWithRegisterOrLogin(refresh);
+      await tokenViewModel?.getAccessToken();
+      _accessToken = tokenViewModel?.accessToken;
+      final name = (repo.response as Map)["first_name"];
+      if (name == "No Name") {
+        return 201;
+      }
+      final firstName = (repo.response as Map)["first_name"];
+      final lastName = (repo.response as Map)["last_name"];
+      _userModel.firstName = firstName;
+      _userModel.lastName = lastName;
+      setFullNameInLocalStorage();
+      return repo.code!;
+    }
+    return -1;
+  }
+
+  Future<Object> postFullName() async {
+    final repo = await UserSerevices.postFullName(
+        userModel.firstName!, userModel.lastName!, accessToken!);
+    if (repo is Success) {
+      setFullNameInLocalStorage();
+      return Success();
+    }
+    return Failure();
   }
 
   void getUsernameLogedIn() async {
     final ins = await SharedPreferences.getInstance();
-    _userModel.username = ins.getString("username");
+    _userModel.firstName = ins.getString("firstName");
+    _userModel.lastName = ins.getString("lastName");
+    _userModel.phoneNumber = ins.getString("phoneNumber");
   }
 
-  void login(BuildContext context) async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-    final loginRepo = await UserSerevices.login(userModel);
-    if (loginRepo is Success) {
-      scaffoldMessenger.showSnackBar(SnackBar(
-        content: Text("Login Success"),
-      ));
-      setRefreshToken(
-          (loginRepo.response as Map<String, dynamic>)["refresh_token"]!);
-      setUsernameInLocalStorage(
-          (loginRepo.response as Map<String, dynamic>)["username"]!);
-      html.window.location.reload();
-      notifyListeners();
-    } else {
-      scaffoldMessenger.showSnackBar(SnackBar(
-        content: Text("Username Or Password Not Currect"),
-        backgroundColor: Colors.redAccent,
-      ));
-      setUserError(UserError(message: loginRepo));
-    }
-  }
-
-  Future<void> register(BuildContext context) async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-    final registerRepo = await UserSerevices.register(userModel);
-    if (registerRepo is Failure) {
-      scaffoldMessenger.showSnackBar(SnackBar(
-        content: Text("Password not Match"),
-        backgroundColor: Colors.redAccent,
-      ));
-    } else if (registerRepo is Success) {
-      setRefreshToken(registerRepo.response as String);
-      setUsernameInLocalStorage(_userModel.username!);
-      html.window.location.reload();
-    } else {
-      scaffoldMessenger.showSnackBar(SnackBar(
-        content: Text("Accourding Error: this username alredy exists"),
-        backgroundColor: Colors.redAccent,
-      ));
-    }
+  int _pageIndex = 0;
+  int get pageIndex => _pageIndex;
+  void pageChanger(int pageIndex) {
+    _pageIndex = pageIndex;
+    notifyListeners();
   }
 
   void setRefreshToken(String refreshToken) async {
@@ -94,8 +120,14 @@ class UserViewModel extends ChangeNotifier {
     sharedPreferences.setString("refreshToken", refreshToken);
   }
 
-  void setUsernameInLocalStorage(String username) async {
+  void setFullNameInLocalStorage() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("username", username);
+    sharedPreferences.setString("firstName", userModel.firstName!);
+    sharedPreferences.setString("lastName", userModel.lastName!);
+  }
+
+  void setPhoneNumberInLocalStorage() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("phoneNumber", userModel.phoneNumber!);
   }
 }

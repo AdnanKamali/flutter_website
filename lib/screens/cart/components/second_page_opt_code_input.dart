@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/components/default_button.dart';
+import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'dart:html' as html;
 
 import '../../../product/repo/api_status.dart';
+import '../../../size_config.dart';
 import '../../../viewModel/checkout_view_model.dart';
 
 class SecondPageCheckoutOtp extends StatefulWidget {
@@ -18,6 +21,7 @@ class _SecondPageCheckoutOtpState extends State<SecondPageCheckoutOtp> {
 
   @override
   Widget build(BuildContext context) {
+    final translate = DemoLocalizations.of(context).translate;
     final checkoutViewModel =
         Provider.of<CheckoutViewModel>(context, listen: false);
     return Column(
@@ -46,7 +50,7 @@ class _SecondPageCheckoutOtpState extends State<SecondPageCheckoutOtp> {
               },
               decoration: InputDecoration(
                 counterText: "",
-                hintText: "Enter Opt code",
+                hintText: translate("enter confirm code"),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: isOptCodeWrong ? Colors.red : Colors.grey,
@@ -61,30 +65,30 @@ class _SecondPageCheckoutOtpState extends State<SecondPageCheckoutOtp> {
             ),
           ),
         ),
-        ElevatedButton(
-          onPressed: isEnableSubmitButton
-              ? () async {
-                  final result = await checkoutViewModel.postOptCode();
-                  // checkoutViewModel.setIsEnableSubmitButtonOptCode(false);
-                  setState(() {
-                    isEnableSubmitButton = false;
-                  });
-                  if (result is Success) {
-                    // get to pay zarin pal with url_luncher
-                    html.window.location.reload();
-                    // reload or get again
-                  } else {
+        SizedBox(
+          width: getProportionateScreenWidth(195),
+          child: DefaultButton(
+            press: isEnableSubmitButton
+                ? () async {
+                    final result = await checkoutViewModel.postOptCode();
+                    // checkoutViewModel.setIsEnableSubmitButtonOptCode(false);
                     setState(() {
-                      isOptCodeWrong = true;
+                      isEnableSubmitButton = false;
                     });
+                    if (result is Success) {
+                      // get to pay zarin pal with url_luncher
+                      html.window.location.reload();
+                      // reload or get again
+                    } else {
+                      setState(() {
+                        isOptCodeWrong = true;
+                      });
+                    }
                   }
-                }
-              : null,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Confirm"),
+                : null,
+            text: translate("confirm"),
           ),
-        )
+        ),
       ],
     );
   }

@@ -50,8 +50,8 @@ class CustomAppBar extends StatelessWidget {
                 children: [
                   Text(
                     "$rating",
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style: TextStyle(
+                      fontSize: getProportionateScreenWidth(12),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
