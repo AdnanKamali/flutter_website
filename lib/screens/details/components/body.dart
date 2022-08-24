@@ -115,7 +115,11 @@ class Body extends StatelessWidget {
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
-                                content: Text("Missed To add"),
+                                content: Text(
+                                  translate("missed to add"),
+                                  style: TextStyle(
+                                      fontFamily: "IranSans", fontSize: 20),
+                                ),
                                 backgroundColor: Colors.redAccent,
                               ));
                             }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/size_config.dart';
 import 'package:shop_app/utils/localzations/demo_localzations.dart';
-// import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
-// import 'package:shop_app/enums.dart';
 
 import 'components/body.dart';
 
@@ -14,7 +13,10 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           translate("profile"),
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(
+              color: Colors.red,
+              fontFamily: "IranSans",
+              fontSize: getProportionateScreenWidth(14)),
         ),
       ),
       body: Body(),

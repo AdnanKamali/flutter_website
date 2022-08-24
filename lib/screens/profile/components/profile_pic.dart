@@ -48,7 +48,7 @@ class ProfilePic extends StatelessWidget {
                         )
                       ],
                       getProportionateScreenHeight(500) - (isDesktop ? 0 : 80),
-                      Text("تغییر نام"));
+                      Text(translate("change name")));
                 },
                 icon: Icon(Icons.edit_outlined))
           ],

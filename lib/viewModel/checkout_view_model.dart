@@ -64,26 +64,6 @@ class CheckoutViewModel extends ChangeNotifier {
     return postRepo;
   }
 
-  // Future<bool> getIsAvalableCode() async {
-  //   final repo = await CheckoutServices.getCheckCodeAvalable(_accessToken!);
-  //   if (repo is Success) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  Future<Object> postOptCode() async {
-    if (_optCode == null) {
-      return Failure();
-    }
-    final result = await CheckoutServices.postOptCode(_optCode!, _accessToken!);
-    if (result is Success) {
-      _optCode = null;
-      return result;
-    }
-    return Failure();
-  }
-
   void getCheckouts() async {
     setLoading(true);
     final repo = await CheckoutServices.getCheckout(_accessToken!);

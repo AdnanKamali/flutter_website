@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/default_button.dart';
-import 'package:shop_app/screens/cart/components/second_page_opt_code_input.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
-import 'package:shop_app/viewModel/checkout_view_model.dart';
 
 import '../../../size_config.dart';
 import 'first_page_inputs.dart';
@@ -79,9 +77,10 @@ class CheckoutCard extends StatelessWidget {
 
   void onCheckoutButton(BuildContext context) async {
     final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
+    final translate = DemoLocalizations.of(context).translate;
     if (cartViewModel.cartListModel.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Cart Is Empty"),
+        content: Text(translate("cart is empty")),
         backgroundColor: Colors.redAccent,
       ));
       return;

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:shop_app/utils/resource_manager/timer.dart';
 import 'package:shop_app/viewModel/error_handler_view_model.dart';
 import 'package:shop_app/viewModel/user_view_model.dart';

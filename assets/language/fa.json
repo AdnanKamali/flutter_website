@@ -59,5 +59,12 @@
     "added to cart":"به سبد خرید اضافه شد",
     "compelete fields and press continue":"فرم را پر کنید و روی ادامه فشار دهید",
     "Username Or Password Not Currect":"نام کاربری یا رمز عبور صحیح نمی باشد",
-    "sweep to remove":"بکشید تا حذف شود"
+    "sweep to right":"به سمت راست بکشید تا حذف شود",
+    "way of remove cart": "روش حذف کارت",
+    "cart is empty": "سبد خرید خالی است",
+    "missed to add":"اضافه نشد",
+    "change name":"تغییر نام",
+    "send again": "ارسال مجدد",
+    "more": "بیشتر"
+
 }

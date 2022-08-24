@@ -7,7 +7,7 @@ import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/utils/resource_manager/url_manager.dart';
 
 import '../../../size_config.dart';
-import '../../sign_up/utils/widgets/category_card.dart';
+import '../../../utils/resource_manager/category_card.dart';
 import 'section_title.dart';
 
 class Categories extends StatelessWidget {

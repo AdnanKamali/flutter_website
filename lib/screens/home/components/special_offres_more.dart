@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/responsive.dart';
 import 'package:shop_app/utils/localzations/demo_localzations.dart';
 
-import '../../sign_up/utils/widgets/category_card.dart';
+import '../../../utils/resource_manager/category_card.dart';
 
 class MoreCategories extends StatelessWidget {
   MoreCategories({Key? key, required this.specialOfferCard}) : super(key: key);

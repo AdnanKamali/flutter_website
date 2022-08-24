@@ -212,7 +212,6 @@ Widget confirmPhoneNumber(
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // TODO: create timer and after timer resend code button and start again timer
                 Consumer<TimerSecond>(builder: (ctx, timerSecond, _) {
                   if (timerSecond.second! >= 60) {
                     final second = timerSecond.second! % 60;
@@ -237,7 +236,7 @@ Widget confirmPhoneNumber(
                               timerSecond.startTimer();
                             }
                           },
-                          child: Text("ارسال مجدد کد"))
+                          child: Text(translate("send again")))
                       : Text("$time شکیبا باشید");
                   // return Text("${timerSecond.second}");
                 })

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/product/repo/api_status.dart';
-import 'package:shop_app/responsive.dart';
 import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
 
@@ -12,15 +11,19 @@ import 'cart_card.dart';
 class Body extends StatelessWidget {
   final CartViewModel cartViewModel;
   const Body({super.key, required this.cartViewModel});
-  static void showHelpDialog(context, CartViewModel cartViewModel) async {
+  static void showHelpDialog(
+    context,
+    CartViewModel cartViewModel,
+  ) async {
+    final translate = DemoLocalizations.of(context).translate;
     await showDialog(
       context: context,
       builder: (ctx) => SimpleDialog(
-        title: Text("روش حذف کارت"),
+        title: Text(translate("way of remove cart")),
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 30),
-            child: Text("جهت حذف کارت آن را به سمت راست بکشید"),
+            child: Text(translate("sweep to right")),
           ),
         ],
       ),

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/responsive.dart';
@@ -8,7 +6,6 @@ import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
 import 'package:shop_app/viewModel/error_handler_view_model.dart';
 import 'package:shop_app/viewModel/user_view_model.dart';
-import 'dart:html' as html;
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
