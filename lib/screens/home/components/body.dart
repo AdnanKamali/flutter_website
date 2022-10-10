@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/utils/widgets/images_changer/image_changer.dart';
 import 'package:shop_app/viewModel/product_view_model.dart';
 
 import '../../../size_config.dart';
@@ -34,11 +35,12 @@ class Body extends StatelessWidget {
         child: SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: getProportionateScreenHeight(20)),
+          // SizedBox(height: getProportionateScreenHeight(20)),
           HomeHeader(),
-          SizedBox(height: getProportionateScreenWidth(10)),
-          DiscountBanner(),
+          SizedBox(height: 14),
+          PreviewImagesBanner(),
           // Categories(),
+          SizedBox(height: getProportionateScreenWidth(20)),
           Categories(
             productTitleListModel: productViewModel.productListModelWithTitle,
           ),

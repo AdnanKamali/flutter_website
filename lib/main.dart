@@ -6,12 +6,14 @@ import 'package:flutter\_localizations/flutter\_localizations.dart';
 import 'package:shop_app/theme.dart';
 import 'package:shop_app/utils/localzations/delegate.dart';
 import 'package:shop_app/utils/resource_manager/timer.dart';
+import 'package:shop_app/viewModel/banner_changer.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
 import 'package:shop_app/viewModel/checkout_view_model.dart';
 import 'package:shop_app/viewModel/error_handler_view_model.dart';
 import 'package:shop_app/viewModel/product_view_model.dart';
 import 'package:shop_app/viewModel/token_view_model.dart';
 import 'package:shop_app/viewModel/user_view_model.dart';
+import 'package:shop_app/viewModel/widget_view_manager.dart';
 
 import 'screens/home/home_screen.dart';
 
@@ -19,7 +21,13 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
+        create: (_) => WidgetManager(),
+      ),
+      ChangeNotifierProvider(
         create: (_) => ProductViewModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => BannerChanger(),
       ),
       ChangeNotifierProvider(
         create: (_) => ErrorHandlerViewModel(),
@@ -35,15 +43,18 @@ void main() {
         update: (ctx, tokenViewModel, cartViewModel) =>
             CartViewModel(tokenViewModel: tokenViewModel),
       ),
-      ChangeNotifierProxyProvider<TokenViewModel, UserViewModel>(
+      ChangeNotifierProxyProvider2<TokenViewModel, WidgetManager,
+          UserViewModel>(
         create: (_) => UserViewModel(),
-        update: (ctx, tokenViewModel, cartViewModel) =>
-            UserViewModel()..setTokenViewModel(tokenViewModel),
+        update: (_, tokenViewModel, widgetManager, userViewModel) =>
+            userViewModel!
+              ..setTokenViewModel(tokenViewModel)
+              ..setWidgetManager(widgetManager),
       ),
       ChangeNotifierProxyProvider<TokenViewModel, CheckoutViewModel>(
         create: (_) => CheckoutViewModel(),
-        update: (ctx, tokenViewModel, cartViewModel) =>
-            CheckoutViewModel(tokenViewModel: tokenViewModel),
+        update: (ctx, tokenViewModel, checkoutViewModel) =>
+            checkoutViewModel!..setTokenViewModel(tokenViewModel),
       ),
     ],
     child: MyApp(),
@@ -80,6 +91,7 @@ class MyApp extends StatelessWidget {
       },
       // We use routeName so that we dont need to remember the name
       initialRoute: HomeScreen.routeName,
+      // home: Center(child: SizedBox(height: 30, child: ThreeDotLoading())),
       onGenerateRoute: RouteGenerator.generaterRoute,
     );
   }

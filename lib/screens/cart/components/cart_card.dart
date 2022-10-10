@@ -21,7 +21,7 @@ class CartCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         SizedBox(
-          width: getProportionateScreenWidth(120),
+          width: getProportionateScreenWidth(60),
           child: AspectRatio(
             aspectRatio: 0.88,
             child: Container(

@@ -27,6 +27,7 @@ class IconBtnWithCounter extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Container(
+            margin: EdgeInsets.all(5),
             padding: EdgeInsets.all(getProportionateScreenWidth(
               12,
             )),
@@ -37,7 +38,7 @@ class IconBtnWithCounter extends StatelessWidget {
               46,
             ),
             decoration: BoxDecoration(
-              color: kSecondaryColor.withOpacity(0.1),
+              color: kSecondaryColor.withOpacity(0.051),
               shape: BoxShape.circle,
             ),
             child: SvgPicture.asset(

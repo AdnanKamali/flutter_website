@@ -25,6 +25,7 @@ void onPhoneNumberPressed(
   if (userViewModel.userModel.phoneNumber == null) {
     return;
   }
+  // change button to loading
   final repo = await userViewModel.postPhoneNumber();
   if (repo is Success) {
     userViewModel.pageChanger(1);

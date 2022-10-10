@@ -10,7 +10,6 @@ class TimerSecond extends ChangeNotifier {
   }
 
   void startTimer() {
-    print("Start");
     _second = 90;
     if (_timer != null) {
       _timer?.cancel();

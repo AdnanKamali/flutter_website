@@ -5,10 +5,17 @@ import 'package:shop_app/user/model/user.dart';
 import 'package:shop_app/user/repo/user_services.dart';
 import 'package:shop_app/utils/user_error.dart';
 import 'package:shop_app/viewModel/token_view_model.dart';
+import 'package:shop_app/viewModel/widget_view_manager.dart';
 
 class UserViewModel extends ChangeNotifier {
   UserViewModel() {
     getUsernameLogedIn();
+  }
+
+  WidgetManager? _widgetManager;
+  WidgetManager? get widgetManager => _widgetManager;
+  void setWidgetManager(WidgetManager widgetManager) {
+    _widgetManager = widgetManager;
   }
 
   TokenViewModel? _tokenViewModel;
@@ -16,16 +23,12 @@ class UserViewModel extends ChangeNotifier {
   void setTokenViewModel(TokenViewModel tokenViewModel) {
     _tokenViewModel = tokenViewModel;
     _tokenViewModel?.getAccessToken();
-    _accessToken = _tokenViewModel?.accessToken;
   }
 
   void backToDefualt() {
     _userModel = UserModel.base();
     _optCode = null;
   }
-
-  String? _accessToken;
-  String? get accessToken => _accessToken;
 
   UserError? _userError;
   UserError? get userError => _userError;
@@ -38,9 +41,6 @@ class UserViewModel extends ChangeNotifier {
   String? get optCode => _optCode;
   void setOptCode(String? code) {
     _optCode = code;
-    // if (code == "") {
-    //   notifyListeners();
-    // }
   }
 
   UserModel _userModel = UserModel.base();
@@ -59,10 +59,12 @@ class UserViewModel extends ChangeNotifier {
   }
 
   Future<Object> postPhoneNumber() async {
+    widgetManager?.clickCotinue(true);
     final repo = await UserSerevices.postPhoneNumber(userModel.phoneNumber!);
-    print(_userModel.firstName);
+    widgetManager?.clickCotinue(false);
     if (repo is Success) {
-      _accessToken = (repo.response as Map)["access_token"];
+      tokenViewModel?.setAccessToken((repo.response as Map)["access_token"]);
+
       return Success();
     } else {
       return Failure();
@@ -70,13 +72,13 @@ class UserViewModel extends ChangeNotifier {
   }
 
   Future<int> postOptCode() async {
-    final repo = await UserSerevices.postOtpCode(optCode!, _accessToken!);
+    var accessToken = tokenViewModel?.accessToken;
+    final repo = await UserSerevices.postOtpCode(_optCode!, accessToken!);
     if (repo is Success) {
       setPhoneNumberInLocalStorage();
       final refresh = (repo.response as Map)["refresh_token"];
       tokenViewModel?.saveRefreshTokenWithRegisterOrLogin(refresh);
       await tokenViewModel?.getAccessToken();
-      _accessToken = tokenViewModel?.accessToken;
       final name = (repo.response as Map)["first_name"];
       if (name == "No Name") {
         return 201;
@@ -92,8 +94,8 @@ class UserViewModel extends ChangeNotifier {
   }
 
   Future<Object> postFullName() async {
-    final repo = await UserSerevices.postFullName(
-        userModel.firstName!, userModel.lastName!, accessToken!);
+    final repo = await UserSerevices.postFullName(userModel.firstName!,
+        userModel.lastName!, tokenViewModel!.accessToken!);
     if (repo is Success) {
       setFullNameInLocalStorage();
       return Success();
@@ -113,11 +115,6 @@ class UserViewModel extends ChangeNotifier {
   void pageChanger(int pageIndex) {
     _pageIndex = pageIndex;
     notifyListeners();
-  }
-
-  void setRefreshToken(String refreshToken) async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("refreshToken", refreshToken);
   }
 
   void setFullNameInLocalStorage() async {

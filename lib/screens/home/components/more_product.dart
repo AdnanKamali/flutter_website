@@ -25,7 +25,7 @@ class MorePopularProduct extends StatelessWidget {
           backgroundColor: Colors.transparent,
           title: Text(
             title ?? translate("products"),
-            style: TextStyle(color: Colors.black54),
+            style: TextStyle(color: Colors.black54, fontFamily: "IranSans"),
           ),
         ),
         body: Padding(

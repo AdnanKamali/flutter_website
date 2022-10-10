@@ -5,6 +5,7 @@ import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/utils/localzations/demo_localzations.dart';
 import 'package:shop_app/viewModel/cart_view_model.dart';
+// import 'package:shop_app/viewModel/checkout_view_model.dart';
 
 import '../../../size_config.dart';
 import 'first_page_inputs.dart';
@@ -95,11 +96,17 @@ class CheckoutCard extends StatelessWidget {
   }
 
   Future<dynamic> checkoutModalBottmSheet(BuildContext context) {
+    // final _formKey = GlobalKey<FormState>();
+    // final checkoutViewModel = Provider.of<CheckoutViewModel>(context);
+    // final translate = DemoLocalizations.of(context).translate;
     return showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-        context: context,
-        builder: (ctx) => FirstPageCheckoutInformation());
+      isScrollControlled: true,
+      // useRootNavigator: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      context: context,
+      builder: (ctx) => FirstPageCheckoutInformation(),
+    );
   }
 }

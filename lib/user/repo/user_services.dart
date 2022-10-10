@@ -2,15 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shop_app/product/repo/api_status.dart';
-// import 'package:shop_app/user/model/user.dart';
 import 'package:shop_app/utils/resource_manager/url_manager.dart';
 import 'package:http/http.dart' as http;
 
 import '../../utils/resource_manager/error_manager.dart';
-
-// final response = await http.post(url,
-//           headers: {"Content-Type": "application/json"},
-//           body: jsonEncode(userModel.toJson()));
 
 class UserSerevices {
   static Future<Object> postFullName(

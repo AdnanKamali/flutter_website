@@ -26,6 +26,8 @@ class TokenViewModel extends ChangeNotifier {
       if (repo is Success) {
         _accessToken = repo.response as String;
         isLogedIn = true;
+      } else {
+        await sharedPreferences.clear();
       }
     }
     setLoading(false);

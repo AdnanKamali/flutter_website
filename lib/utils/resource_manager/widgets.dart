@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/product/repo/api_status.dart';
 import 'package:shop_app/responsive.dart';
 import 'package:shop_app/utils/resource_manager/timer.dart';
+import 'package:shop_app/utils/widgets/loading_dots/loading_three.dart';
+import 'package:shop_app/viewModel/widget_view_manager.dart';
 
 import '../../constants.dart';
 import '../../size_config.dart';
@@ -29,7 +31,7 @@ final formFieldStyle = TextStyle(fontSize: getProportionateScreenWidth(14));
 Future<dynamic> sign_up(BuildContext context, List<Widget> widgetPage,
     [double? size, Text? title]) {
   final isDesktop = Responsive.isDesktop(context);
-  List<double> heightSizePages = [340, 438, 500];
+  List<double> heightSizePages = [340, 440, 500];
   final List<Text> titles = [
     Text.rich(
       TextSpan(
@@ -119,15 +121,26 @@ Widget phoneNumberPageLogin(UserViewModel userViewModel,
               height: buttonSize,
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => onPhoneNumberPressed(errorHandlerViewModel,
-                    _formKey, userViewModel, timerSecond),
-                child: Text(
-                  translate("continue"),
-                  textDirection: TextDirection.rtl,
-                  // style: TextStyle(
-                  //   fontSize: getProportionateScreenHeight(35),
-                  // ),
-                ),
+                onPressed: () {
+                  onPhoneNumberPressed(
+                    errorHandlerViewModel,
+                    _formKey,
+                    userViewModel,
+                    timerSecond,
+                  );
+                },
+                child:
+                    Consumer<WidgetManager>(builder: (ctx, widgetManager, _) {
+                  return widgetManager.isClickedContinue
+                      ? ThreeDotLoading()
+                      : Text(
+                          translate("continue"),
+                          textDirection: TextDirection.rtl,
+                          // style: TextStyle(
+                          //   fontSize: getProportionateScreenHeight(35),
+                          // ),
+                        );
+                }),
                 style: ElevatedButton.styleFrom(
                   primary: kPrimaryColor,
                 ),
@@ -163,11 +176,14 @@ Widget confirmPhoneNumber(
                         translate("confirm") +
                         " " +
                         translate("for") +
-                        " "),
+                        " ",
+                    style: TextStyle(fontSize: 12)),
                 TextSpan(
                     text: "${userViewModel.userModel.phoneNumber}",
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: " " + translate("sent")),
+                TextSpan(
+                    text: " " + translate("sent"),
+                    style: TextStyle(fontSize: 12)),
               ]))
             ]),
             Row(children: [

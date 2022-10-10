@@ -6,14 +6,14 @@ import 'package:shop_app/utils/user_error.dart';
 import 'package:shop_app/viewModel/token_view_model.dart';
 
 class CheckoutViewModel extends ChangeNotifier {
-  final TokenViewModel? tokenViewModel;
-  CheckoutViewModel({this.tokenViewModel}) {
-    if (tokenViewModel != null) {
-      if (tokenViewModel?.accessToken != null) {
-        _accessToken = tokenViewModel?.accessToken;
-      }
+  TokenViewModel? tokenViewModel;
+  void setTokenViewModel(TokenViewModel tokenViewModel) {
+    tokenViewModel = tokenViewModel;
+    if (tokenViewModel.accessToken != null) {
+      setAccessToken(tokenViewModel.accessToken!);
+      getCheckouts();
     }
-    if (_accessToken != null) getCheckouts();
+    return;
   }
 
   String? _accessToken;
@@ -27,6 +27,8 @@ class CheckoutViewModel extends ChangeNotifier {
     _loading = loading;
     notifyListeners();
   }
+
+  final TextEditingController textEditingController = TextEditingController();
 
   int? _optCode;
   int? get optCode => _optCode;

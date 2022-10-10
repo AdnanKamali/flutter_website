@@ -14,6 +14,7 @@ class ProductModel {
   final List<String> imagesUrl;
   final List<Color> colors;
   final double price;
+  final bool isAvalable;
 
   ProductModel({
     required this.id,
@@ -22,6 +23,7 @@ class ProductModel {
     required this.name,
     required this.price,
     required this.description,
+    required this.isAvalable,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -34,11 +36,13 @@ class ProductModel {
       images.add(image);
     }
     return ProductModel(
-        id: json["id"],
-        imagesUrl: images,
-        colors: colors,
-        name: json["name"],
-        price: json["price"],
-        description: json["description"]);
+      id: json["id"],
+      imagesUrl: images,
+      colors: colors,
+      name: json["name"],
+      price: json["price"],
+      description: json["description"],
+      isAvalable: json["is_avalable"],
+    );
   }
 }

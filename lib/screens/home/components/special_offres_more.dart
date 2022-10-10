@@ -23,7 +23,7 @@ class MoreCategories extends StatelessWidget {
           backgroundColor: Colors.transparent,
           title: Text(
             translate("category"),
-            style: TextStyle(color: Colors.black54),
+            style: TextStyle(color: Colors.black54, fontFamily: "IranSans"),
           ),
         ),
         body: Padding(

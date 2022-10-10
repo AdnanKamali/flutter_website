@@ -58,72 +58,79 @@ class Body extends StatelessWidget {
                           top: getProportionateScreenWidth(15),
                         ),
                         child: DefaultButton(
-                          text: translate("add to cart"),
-                          press: () async {
-                            if (newCartViewModel.cart.color == null) {
-                              newCartViewModel
-                                  .setColor(product.colors[0].value);
-                            }
-                            if (newCartViewModel.cart.numOfItem == null) {
-                              newCartViewModel.setNumOfProduct(1);
-                            }
-                            if (newCartViewModel.cart.product == null) {
-                              newCartViewModel.setProduct(product);
-                            }
+                          text: product.isAvalable
+                              ? translate("add to cart")
+                              : translate("not avalable"),
+                          press: product.isAvalable
+                              ? () async {
+                                  if (newCartViewModel.cart.color == null) {
+                                    newCartViewModel
+                                        .setColor(product.colors[0].value);
+                                  }
+                                  if (newCartViewModel.cart.numOfItem == null) {
+                                    newCartViewModel.setNumOfProduct(1);
+                                  }
+                                  if (newCartViewModel.cart.product == null) {
+                                    newCartViewModel.setProduct(product);
+                                  }
 
-                            if (cartViewModel.accessToken == null) {
-                              // Sign up
-                              final userViewModel = Provider.of<UserViewModel>(
-                                  context,
-                                  listen: false);
-                              final errorViewModel =
-                                  Provider.of<ErrorHandlerViewModel>(context,
-                                      listen: false);
-                              await sign_up(context, [
-                                phoneNumberPageLogin(
-                                    userViewModel, translate, context),
-                                confirmPhoneNumber(userViewModel, translate),
-                                signUpFullName(userViewModel, translate)
-                              ]).then((value) {
-                                userViewModel.pageChanger(0);
-                                userViewModel.backToDefualt();
-                                errorViewModel.backToDefualt();
-                              });
+                                  if (cartViewModel.accessToken == null) {
+                                    // Sign up
+                                    final userViewModel =
+                                        Provider.of<UserViewModel>(context,
+                                            listen: false);
+                                    final errorViewModel =
+                                        Provider.of<ErrorHandlerViewModel>(
+                                            context,
+                                            listen: false);
+                                    await sign_up(context, [
+                                      phoneNumberPageLogin(
+                                          userViewModel, translate, context),
+                                      confirmPhoneNumber(
+                                          userViewModel, translate),
+                                      signUpFullName(userViewModel, translate)
+                                    ]).then((value) {
+                                      userViewModel.pageChanger(0);
+                                      userViewModel.backToDefualt();
+                                      errorViewModel.backToDefualt();
+                                    });
 
-                              return;
-                            }
-                            final repo = await newCartViewModel
-                                .postCart(cartViewModel.accessToken!);
+                                    return;
+                                  }
+                                  final repo = await newCartViewModel
+                                      .postCart(cartViewModel.accessToken!);
 
-                            if (repo is Success) {
-                              if (repo.code == 101) {
-                                cartViewModel.getCarts();
-                              } else {
-                                cartViewModel
-                                    .insertToCartModel(newCartViewModel.cart);
-                              }
+                                  if (repo is Success) {
+                                    if (repo.code == 101) {
+                                      cartViewModel.getCarts();
+                                    } else {
+                                      cartViewModel.insertToCartModel(
+                                          newCartViewModel.cart);
+                                    }
 
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                            content: Text(
+                                      translate("added to cart"),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6
+                                          ?.copyWith(color: Colors.white),
+                                    )));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
                                       content: Text(
-                                translate("added to cart"),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    ?.copyWith(color: Colors.white),
-                              )));
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(
-                                  translate("missed to add"),
-                                  style: TextStyle(
-                                      fontFamily: "IranSans", fontSize: 20),
-                                ),
-                                backgroundColor: Colors.redAccent,
-                              ));
-                            }
-                          },
+                                        translate("missed to add"),
+                                        style: TextStyle(
+                                            fontFamily: "IranSans",
+                                            fontSize: 20),
+                                      ),
+                                      backgroundColor: Colors.redAccent,
+                                    ));
+                                  }
+                                }
+                              : null,
                         ),
                       ),
                     ),

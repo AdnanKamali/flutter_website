@@ -27,69 +27,78 @@ class HomeHeader extends StatelessWidget {
     final errorViewModel = Provider.of<ErrorHandlerViewModel>(context);
     final translate = DemoLocalizations.of(context).translate;
     final isDesktop = Responsive.isDesktop(context);
-    return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextButton(
-            onPressed: () async {
-              final isLogedIn = userViewModel.tokenViewModel!.isLogedIn;
-              if (isLogedIn) {
-                // get from server
-                Navigator.pushNamed(context, ProfileScreen.routeName);
-              } else {
-                await sign_up(context, [
-                  phoneNumberPageLogin(userViewModel, translate, context),
-                  confirmPhoneNumber(userViewModel, translate),
-                  signUpFullName(userViewModel, translate)
-                ]).then((value) {
-                  userViewModel.pageChanger(0);
-                  userViewModel.backToDefualt();
-                  errorViewModel.backToDefualt();
-                });
-                // Navigator.pushNamed(context, SignInScreen.routeName);
-              }
-            },
-            child: Text(
-              userViewModel.userModel.firstName == null
-                  ? "${translate("login")}/${translate("signUp")}"
-                  : (userViewModel.userModel.firstName! +
-                      " " +
-                      userViewModel.userModel.lastName!),
-              maxLines: 1,
-              style: TextStyle(
-                color: userViewModel.userModel.firstName == null
-                    ? kPrimaryColor
-                    : Colors.white,
-                fontSize: isDesktop ? null : 10,
-              ),
-            ),
-            style: TextButton.styleFrom(
-              maximumSize: Size(MediaQuery.of(context).size.width * 0.34, 60),
-              backgroundColor: userViewModel.userModel.firstName == null
-                  ? null
-                  : kPrimaryColor,
-              side: BorderSide(
-                  width: 0.5,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black12, offset: Offset(0.2, 0.2), blurRadius: 20),
+        ],
+      ),
+      child: Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              onPressed: () async {
+                final isLogedIn = userViewModel.tokenViewModel!.isLogedIn;
+                if (isLogedIn) {
+                  // get from server
+                  Navigator.pushNamed(context, ProfileScreen.routeName);
+                } else {
+                  await sign_up(context, [
+                    phoneNumberPageLogin(userViewModel, translate, context),
+                    confirmPhoneNumber(userViewModel, translate),
+                    signUpFullName(userViewModel, translate)
+                  ]).then((value) {
+                    userViewModel.pageChanger(0);
+                    userViewModel.backToDefualt();
+                    errorViewModel.backToDefualt();
+                  });
+                  // Navigator.pushNamed(context, SignInScreen.routeName);
+                }
+              },
+              child: Text(
+                userViewModel.userModel.firstName == null
+                    ? "${translate("login")} | ${translate("signUp")}"
+                    : (userViewModel.userModel.firstName! +
+                        " " +
+                        userViewModel.userModel.lastName!),
+                maxLines: 1,
+                style: TextStyle(
                   color: userViewModel.userModel.firstName == null
                       ? kPrimaryColor
-                      : Colors.white),
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  ?.copyWith(color: kPrimaryColor),
-              padding: EdgeInsets.all(22),
+                      : Colors.white,
+                  fontSize: isDesktop ? null : 10,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                maximumSize: Size(MediaQuery.of(context).size.width * 0.34, 60),
+                backgroundColor: userViewModel.userModel.firstName == null
+                    ? null
+                    : kPrimaryColor,
+                side: BorderSide(
+                    width: 0.5,
+                    color: userViewModel.userModel.firstName == null
+                        ? kPrimaryColor
+                        : Colors.white),
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(color: kPrimaryColor),
+                padding: EdgeInsets.all(22),
+              ),
             ),
-          ),
-          IconBtnWithCounter(
-            color: kPrimaryColor,
-            svgSrc: "assets/icons/Cart Icon.svg",
-            numOfitem: cartViewModel.cartListModel.length,
-            press: () => Navigator.pushNamed(context, CartScreen.routeName),
-          ),
-        ],
+            IconBtnWithCounter(
+              color: kPrimaryColor,
+              svgSrc: "assets/icons/Cart Icon.svg",
+              numOfitem: cartViewModel.cartListModel.length,
+              press: () => Navigator.pushNamed(context, CartScreen.routeName),
+            ),
+          ],
+        ),
       ),
     );
   }
